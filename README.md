@@ -1,0 +1,2 @@
+# EpidemicAreaManagementSystem
+2020年春季学期软件工程大作业：疫区管理系统
