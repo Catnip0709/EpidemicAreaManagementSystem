@@ -1,0 +1,5 @@
+/root/socketli/build/CMakeFiles/rebuild_cache.dir
+/root/socketli/build/CMakeFiles/edit_cache.dir
+/root/socketli/build/server/CMakeFiles/rebuild_cache.dir
+/root/socketli/build/server/CMakeFiles/CHttpServer.dir
+/root/socketli/build/server/CMakeFiles/edit_cache.dir

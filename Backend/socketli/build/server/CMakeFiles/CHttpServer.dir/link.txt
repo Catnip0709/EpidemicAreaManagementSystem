@@ -1,0 +1,1 @@
+/usr/bin/c++   -O2 -Werror -g -ggdb  -rdynamic CMakeFiles/CHttpServer.dir/main.cc.o  -o CHttpServer -lpthread 
