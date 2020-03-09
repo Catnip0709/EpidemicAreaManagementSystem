@@ -1,5 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR}/cpp-httplib-master)
-set(SERVER_SRC main.cc)
+set(SERVER_SRC main.cc MsgPraser.cc)
 LINK_LIBRARIES(
 "/usr/lib64/mysql/libmysqlservices.a"
 "/usr/lib64/mysql/libmysqlclient.a"
