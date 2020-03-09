@@ -5,4 +5,3 @@ set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O2 -Werror -g -ggdb")
 add_compile_options(-std=c++11 -pthread)
 add_subdirectory(server)
-
