@@ -5,7 +5,7 @@
 + 姓名 userName <br>
 + 登陆密码 password <br>
 + 该用户是否是疫区管理员 isAdministrator <br>
-+ 所住小区号 neighborID 
++ 所住栋号 buildingID 
 + 所住户号 familyID 
 ```
 CREATE TABLE `User` (
@@ -13,26 +13,26 @@ CREATE TABLE `User` (
   `userName` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `isAdministrator` boolean NOT NULL,
-  `neighborID` int NOT NULL, 
+  `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
   PRIMARY KEY (`userID`) 
 );
 ```
 
 # 二、小区和户相关表
-## 1、Neighbor表（住宅小区）
-+ 小区号 neighborID （主键）
-+ 该小区管理员 administratorID
+## 1、Building表（栋）
++ 栋号 buildingID （主键）
++ 该栋楼管理员 administratorID
 ```
-CREATE TABLE `Neighbor` (
-  `neighborID` int NOT NULL, 
+CREATE TABLE `Building` (
+  `buildingID` int NOT NULL, 
   `administratorID` char(18) NOT NULL,
-  PRIMARY KEY (`neighborID`) 
+  PRIMARY KEY (`buildingID`) 
 );
 ```
 
 ## 2、Family表（户）
-+ 小区号 neighborID （主键1）
++ 栋号 buildingID （主键1）
 + 户号 familyID （主键2）
 + 该户负责人 leaderID
 + 是否为空户
@@ -42,13 +42,13 @@ CREATE TABLE `Neighbor` (
 户的类型：需要每天遍历所有住户是否为隔离人员或病患以实时更新。
 ```
 CREATE TABLE `Family` (
-  `neighborID` int NOT NULL, 
+  `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
   `leaderID` char(18) NOT NULL,
   `isNull` boolean NOT NULL,
   `type` int NOT NULL,
   `userID` varchar(255),
-  PRIMARY KEY (`neighborID`, `familyID`) 
+  PRIMARY KEY (`buildingID`, `familyID`) 
 );
 ```
 
