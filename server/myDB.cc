@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <mysql/mysql.h>
 #include "myDB.h"
 using namespace std;
@@ -9,7 +10,7 @@ MyDB::MyDB()
 	connection = mysql_init(NULL); // 初始化数据库连接变量
 	if(connection == NULL)
 	{
-		cout << "Error:" << mysql_error(connection);
+		cout << "MYSQL初始化失败！Error:" << mysql_error(connection);
 		exit(1);
 	}
 }
@@ -29,41 +30,33 @@ bool MyDB::initDB(string host, string user, string pwd, string db_name)
 	connection = mysql_real_connect(connection, host.c_str(), user.c_str(), pwd.c_str(), db_name.c_str(), 0, NULL, 0);
 	if(connection == NULL)
 	{
-		cout << "Error:" << mysql_error(connection);
+		cout << "MYSQL初始化失败！Error:" << mysql_error(connection);
 		exit(1);
 	}
 	return true;
 }
  
-bool MyDB::exeSQL(string sql)
-{
-	// mysql_query()执行成功返回0，失败返回非0值。与PHP中不一样
-	if(mysql_query(connection, sql.c_str()))
-	{
+bool MyDB::exeSQL(string sql) {
+	sqlResult.clear();
+	cout<<"——————MYSQL结果——————"<<endl;
+	if(mysql_query(connection, sql.c_str())) { // mysql_query()执行成功返回0，失败返回非0值
 		cout << "Query Error:" << mysql_error(connection);
-		exit(1);
+		return false;
 	}
-	else
-	{
+	else {
 		result = mysql_use_result(connection); // 获取结果集
-		// mysql_field_count()返回connection查询的列数
-		for(int i=0; i < mysql_field_count(connection); ++i)
-		{
-			// 获取下一行
-			row = mysql_fetch_row(result);
-			if(row <= 0)
-			{
-				break;
-			}
-			// mysql_num_fields()返回结果集中的字段数
-			for(int j=0; j < mysql_num_fields(result); ++j)
-			{
+		while(row = mysql_fetch_row(result)) { // 不断获取下一行
+			vector<string> rowResult;
+			for(int j = 0; j < mysql_num_fields(result); ++j) { // mysql_num_fields()返回列数
+				rowResult.push_back(row[j]);
 				cout << row[j] << " ";
 			}
+			sqlResult.push_back(rowResult);
 			cout << endl;
 		}
 		// 释放结果集的内存
 		mysql_free_result(result);
 	}
+	cout<<"——————————————————"<<endl;
 	return true;
 }
