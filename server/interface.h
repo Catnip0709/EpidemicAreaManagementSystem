@@ -21,3 +21,5 @@ string userRegister (string userID, string userName, string password, string isA
 string newAnnouncement(string id, string title, string content, string state, string date);
 string modifyAnnouncement(string id, string title, string content, string state, string date);
 string deleteAnnouncement(string id);
+
+string modifyInchargeBuilding(string userID, string buildingID, string isAdd);

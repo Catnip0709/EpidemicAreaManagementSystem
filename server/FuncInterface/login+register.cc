@@ -10,17 +10,17 @@ string userLogin (string userID, string password) {
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
     string sql = "SELECT password FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
-    if (!db.exeSQL(sql)) { // MYSQL执行失败
+    if (!db.exeSQL(sql, RETRIEVE)) { // MYSQL执行失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
     
-    if (!db.result->row_count) { // 该ID尚未注册
+    if (!mysql_num_rows(db.result)) { // 该ID尚未注册
         result = result + to_string(HAVENT_REGISTER) + "}";
         return result;
     }
     
-    if (!(db.sqlResult.size() == 1 && db.sqlResult[0].size() == 1)){ // 数据出错，应该只得到一个密码
+    if (!(db.sqlResult.size() == 1 && db.sqlResult[0].size() == 1)) { // 数据出错，应该只得到一个结果
         result = result + to_string(DATA_ERR) + "}";
         return result;
     } 
@@ -42,7 +42,7 @@ string userRegister (string userID, string userName, string password, string isA
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
-	if(!db.exeSQL(sql)) {
+	if(!db.exeSQL(sql, RETRIEVE)) {
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -52,14 +52,9 @@ string userRegister (string userID, string userName, string password, string isA
         return result;
     }
 
-    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + 
-          userName + "\", \"" + 
-          password + "\", " + 
-          isAdministrator + ", " + 
-          buildingID + ", " + 
-          familyID + ");";
+    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + isAdministrator + ", " + buildingID + ", " + familyID + ");";
     
-    if(!db.exeSQL(sql)) { // 注册信息插入mysql失败
+    if(!db.exeSQL(sql, CREATE)) { // 注册信息插入mysql失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }

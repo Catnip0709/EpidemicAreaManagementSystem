@@ -51,5 +51,11 @@ int main(int argc,char **argv) {
     // 返回结果给客户端
   });
 
+  svr.Post("/modifyInchargeBuilding", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string modifyInchargeBuildingResult = modifyInchargeBuilding(doc["userID"].GetString(), doc["buildingID"].GetString(), doc["isAdd"].GetString());
+    // 返回结果给客户端
+  });
+
   svr.listen("0.0.0.0", port);
 }

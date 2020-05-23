@@ -16,18 +16,18 @@ CREATE TABLE `User` (
   `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
   PRIMARY KEY (`userID`) 
-);
+)CHARSET=utf8;
 ```
 
 # 二、小区和户相关表
 ## 1、Building表（栋）
 + 栋号 buildingID （主键）
 + 该栋楼管理员 administratorID
+栋和管理员是多对多的关系，一个管理员可以管多栋楼，一栋楼可以被多个管理员管
 ```
 CREATE TABLE `Building` (
   `buildingID` int NOT NULL, 
-  `administratorID` char(18) NOT NULL,
-  PRIMARY KEY (`buildingID`) 
+  `administratorID` char(18) NOT NULL
 );
 ```
 
@@ -76,7 +76,7 @@ CREATE TABLE `EquipmentStorage` (
   `equipment` varchar(255) NOT NULL,
   `storage` int NOT NULL, 
   PRIMARY KEY (`equipment`) 
-);
+)CHARSET=utf8;
 ```
 
 ## 3、关系网络管理
@@ -107,7 +107,7 @@ CREATE TABLE `IsolationManagement` (
 + 公告级别 state
 + 公告发布日期 date
 ```
-CREATE TABLE `announcement` (
+CREATE TABLE `Announcement` (
   `id`      int(11)      NOT NULL, 
   `title`    char(20)     NOT NULL,
   `content`     TEXT NOT NULL ,

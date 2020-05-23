@@ -10,8 +10,8 @@ string newAnnouncement(string id, string title, string content, string state, st
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
     // 先判断该ID是否已经注册过
-    string sql = "SELECT 1 FROM `announcement` WHERE id = \"" + id + "\" LIMIT 1;";
-	if(!db.exeSQL(sql)) {
+    string sql = "SELECT 1 FROM `Announcement` WHERE id = \"" + id + "\" LIMIT 1;";
+	if(!db.exeSQL(sql, RETRIEVE)) {
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -21,13 +21,9 @@ string newAnnouncement(string id, string title, string content, string state, st
         return result;
     }
 
-    sql = "INSERT INTO `announcement` VALUES (" + id + 
-          "\"" + title + "\"," +
-          "\"" + content + "\"," +
-          "\"" + state + "\"," +
-          "\"" + date + "\");";
+    sql = "INSERT INTO `Announcement` VALUES (" + id + "\"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
 
-    if(!db.exeSQL(sql)) { // 插入失败
+    if(!db.exeSQL(sql, CREATE)) { // 插入失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -43,8 +39,8 @@ string modifyAnnouncement(string id, string title, string content, string state,
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
     // 先判断该ID是否已经注册过
-    string sql = "SELECT 1 FROM `announcement` WHERE id = \"" + id + "\" LIMIT 1;";
-	if(!db.exeSQL(sql)) {
+    string sql = "SELECT 1 FROM `Announcement` WHERE id = \"" + id + "\" LIMIT 1;";
+	if(!db.exeSQL(sql, RETRIEVE)) {
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -55,20 +51,16 @@ string modifyAnnouncement(string id, string title, string content, string state,
     }
 
     // 删掉旧的
-    string sql = "DELETE FROM `announcement` WHERE id = " + id + ";";
-    if(!db.exeSQL(sql)) { // 删除失败
+    sql = "DELETE FROM `Announcement` WHERE id = " + id + ";";
+    if(!db.exeSQL(sql, DELETE)) { // 删除失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
 
     // 插入新的
-    sql = "INSERT INTO `announcement` VALUES (" + id + 
-          "\"" + title + "\"," +
-          "\"" + content + "\"," +
-          "\"" + state + "\"," +
-          "\"" + date + "\");";
+    sql = "INSERT INTO `Announcement` VALUES (" + id + ", \"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
 
-    if(!db.exeSQL(sql)) { // 插入失败
+    if(!db.exeSQL(sql, CREATE)) { // 插入失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -83,8 +75,8 @@ string deleteAnnouncement(string id) {
     MyDB db;
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
-    string sql = "DELETE FROM `announcement` WHERE id = " + id + ";";
-    if(!db.exeSQL(sql)) { // 删除失败
+    string sql = "DELETE FROM `Announcement` WHERE id = " + id + ";";
+    if(!db.exeSQL(sql, CREATE)) { // 删除失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
