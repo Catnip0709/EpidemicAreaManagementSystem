@@ -17,4 +17,7 @@ Document parseJson(const Request &req);
 // 业务接口
 string userLogin(string userID, string password);
 string userRegister (string userID, string userName, string password, string isAdministrator, string buildingID, string familyID);
+
+string newAnnouncement(string id, string title, string content, string state, string date);
+string modifyAnnouncement(string id, string title, string content, string state, string date);
 string deleteAnnouncement(string id);

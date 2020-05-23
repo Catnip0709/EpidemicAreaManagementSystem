@@ -52,7 +52,12 @@ string userRegister (string userID, string userName, string password, string isA
         return result;
     }
 
-    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + isAdministrator + ", " + buildingID + ", " + familyID + ");";
+    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + 
+          userName + "\", \"" + 
+          password + "\", " + 
+          isAdministrator + ", " + 
+          buildingID + ", " + 
+          familyID + ");";
     
     if(!db.exeSQL(sql)) { // 注册信息插入mysql失败
         result = result + to_string(MYSQL_ERR) + "}";

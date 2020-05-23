@@ -33,15 +33,23 @@ int main(int argc,char **argv) {
     // 返回结果给客户端
   });
 
+  svr.Post("/newAnnouncement", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string newAnnouncementResult = newAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+    // 返回结果给客户端
+  });
+
+  svr.Post("/modifyAnnouncement", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string modifyAnnouncementResult = modifyAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+    // 返回结果给客户端
+  });
+
   svr.Post("/deleteAnnouncement", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
     string deleteAnnouncementResult = deleteAnnouncement(doc["id"].GetString());
     // 返回结果给客户端
   });
-
-
-
-
 
   svr.listen("0.0.0.0", port);
 }

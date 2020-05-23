@@ -98,3 +98,23 @@ CREATE TABLE `IsolationManagement` (
   PRIMARY KEY (`userID`, `date`) 
 );
 ```
+
+# 三、公告栏
+## 公告表
++ 公告id id （主键）
++ 公告标题 title
++ 公告内容 content
++ 公告级别 state
++ 公告发布日期 date
+```
+CREATE TABLE `announcement` (
+  `id`      int(11)      NOT NULL, 
+  `title`    char(20)     NOT NULL,
+  `content`     TEXT NOT NULL ,
+  `state`   char(50)      NOT NULL,
+  `date` char(10)     NOT NULL,
+  PRIMARY KEY (`id`) 
+)CHARSET=utf8;
+
+INSERT INTO `announcement` VALUES (1, "重要通知!", "本社区从疫情开始进行封闭管理。每次出入需要进行体温检测，出入需凭借学生证或教师证，无证不允许进入。\n", "重要", "2019-11-1");
+```
