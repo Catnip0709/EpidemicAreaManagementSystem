@@ -86,21 +86,45 @@ CREATE TABLE `PhysicalCondition` (
 INSERT INTO `PhysicalCondition` VALUE ("452223199707090000", "2020-03-23", "36.5", "0");
 ```
 
-## 2、EquipmentStorage 防护用具存量表
-+ 防护用具名称 equipment （主键）
-+ 剩余存量 storage
+## 2、EquipmentStorage 防疫物资存量表
++ 物资id equipmentID（主键）  
++ 物资名称 equipmentName   
++ 剩余存量 storage  
 ```
 CREATE TABLE `EquipmentStorage` (
-  `equipment` varchar(255) NOT NULL,
+  `equipmentID` int NOT NULL AUTO_INCREMENT,
+  `equipmentName` varchar(255) NOT NULL,
   `storage` int NOT NULL, 
-  PRIMARY KEY (`equipment`) 
-)CHARSET=utf8;
+  PRIMARY KEY (`equipmentID`) 
+)AUTO_INCREMENT=1 CHARSET=utf8;
+
+INSERT INTO EquipmentStorage (equipmentName,storage) VALUES ("防护手套",100);
 ```
 
-## 3、关系网络管理
+## 3、ApplyEquipment 物资申请记录表
++ 申请订单ID applyID
++ 申请人身份证 userID
++ 申请的物资名称 equipmentName
++ 申请数量 amount
++ 申请日期 date
+```
+CREATE TABLE `ApplyEquipment` (
+  `applyID` int NOT NULL AUTO_INCREMENT,
+  `userID` char(18) NOT NULL,
+  `equipmentName` char(100) NOT NULL,
+  `amount` int NOT NULL, 
+  `date` varchar(10),
+  PRIMARY KEY (`applyID`) 
+)AUTO_INCREMENT=10000 CHARSET=utf8;
+
+INSERT INTO ApplyEquipment (userID,equipmentName,amount,date) VALUES ("452223199707090000","手套",3,"2020-05-28");
+```
+
+
+## 4、关系网络管理
 ？
 
-## 4、IsolationManagement  隔离管理
+## 5、IsolationManagement  隔离管理
 + 隔离人员身份证 userID （主键1）
 + 当前日期 date （主键2）
 + 是否是病患 isPatient

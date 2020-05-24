@@ -23,49 +23,67 @@ int main(int argc,char **argv) {
 
   svr.Post("/userRegister", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string userRegisterResult = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString());
+    string result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/adminRegister", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string adminRegisterResult = adminRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString());
+    string result = adminRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/login", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string loginResult = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
+    string result = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/newAnnouncement", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string newAnnouncementResult = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+    string result = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/modifyAnnouncement", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string modifyAnnouncementResult = modifyAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+    string result = modifyAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/deleteAnnouncement", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string deleteAnnouncementResult = deleteAnnouncement(doc["id"].GetString());
+    string result = deleteAnnouncement(doc["id"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/modifyInchargeBuilding", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string modifyInchargeBuildingResult = modifyInchargeBuilding(doc["userID"].GetString(), doc["buildingID"].GetString(), doc["isAdd"].GetString());
+    string result = modifyInchargeBuilding(doc["userID"].GetString(), doc["buildingID"].GetString(), doc["isAdd"].GetString());
     // 返回结果给客户端
   });
 
   svr.Post("/physicalCondition", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string physicalConditionResult = physicalCondition(doc["userID"].GetString(), doc["date"].GetString(), doc["todayTemperature"].GetString(), doc["HuBeiContact"].GetString());
+    string result = physicalCondition(doc["userID"].GetString(), doc["date"].GetString(), doc["todayTemperature"].GetString(), doc["HuBeiContact"].GetString());
+    // 返回结果给客户端
+  });
+
+  svr.Post("/newEquipment", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result = newEquipment(doc["equipmentName"].GetString(), doc["storage"].GetString());
+    // 返回结果给客户端
+  });
+
+  svr.Post("/modifyEquipment", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result = modifyEquipment(doc["equipmentID"].GetString(), doc["storageChange"].GetString());
+    // 返回结果给客户端
+  });
+
+  svr.Post("/applyEquipment", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result = applyEquipment(doc["userID"].GetString(), doc["equipmentName"].GetString(), doc["amount"].GetString(), doc["date"].GetString());
     // 返回结果给客户端
   });
 

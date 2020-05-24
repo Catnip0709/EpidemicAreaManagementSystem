@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <httplib.h>
-#include <unordered_map>
 
 #include "rapidjson/include/rapidjson/document.h"
 #include "rapidjson/include/rapidjson/writer.h"
@@ -27,3 +27,7 @@ string deleteAnnouncement(string id);
 string modifyInchargeBuilding(string userID, string buildingID, string isAdd);
 
 string physicalCondition(string userID, string date, string todayTemperature, string HuBeiContact);
+
+string newEquipment(string equipmentName, string storage);
+string modifyEquipment(string equipmentID, string storageChange);
+string applyEquipment(string userID, string equipmentName, string amount, string date);

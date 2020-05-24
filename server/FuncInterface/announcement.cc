@@ -10,20 +10,12 @@ string newAnnouncement(string title, string content, string state, string date) 
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
     string sql = "INSERT INTO `Announcement` (title, content, state, date) VALUES (\"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
-    if(!db.exeSQL(sql, CREATE)) { // 插入失败
-        result = result + to_string(MYSQL_ERR) + ",\"id\":-1}";
-        return result;
-    }
- 
-    // 获取id
-    sql = "select MAX(id) from Announcement;";
-    if(!db.exeSQL(sql, RETRIEVE)) { // 查询失败
+    if (!db.exeSQL(sql, CREATE)) { // 插入失败
         result = result + to_string(MYSQL_ERR) + ",\"id\":-1}";
         return result;
     }
 
-    result = result + to_string(SUCCESS) + ",\"id\":" + db.sqlResult[0][0] + "}";
-    cout<<result<<endl;
+    result = result + to_string(SUCCESS) + ",\"id\":" + to_string(mysql_insert_id(db.connection)) + "}";
     return result;
 }
 

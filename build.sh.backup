@@ -1,0 +1,12 @@
+sudo dd if=/dev/zero of=/swapfile bs=64M count=16
+#count的大小就是增加的swap空间的大小，64M是块大小，所以空间大小是bs*count=1024MB
+sudo mkswap /swapfile
+#把刚才空间格式化成swap格式
+chmod 0600 /swapfile  
+#该目录权限，不改的话，在下一步启动时会报“swapon: /swapfile: insecure permissions 0644, 0600 suggested.”错误
+sudo swapon /swapfile
+#使用刚才创建的swap空间
+cmake ..
+make
+sudo swapoff /swapfile
+sudo rm /swapfile

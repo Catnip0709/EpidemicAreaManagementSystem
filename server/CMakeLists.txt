@@ -6,7 +6,8 @@ set(SERVER_SRC
     FuncInterface/login+register.cc 
     FuncInterface/announcement.cc
     FuncInterface/familyManagement.cc
-    FuncInterface/physicalCondition.cc)
+    FuncInterface/physicalCondition.cc
+    FuncInterface/equipment.cc)
 LINK_LIBRARIES(
 "/usr/lib64/mysql/libmysqlservices.a"
 "/usr/lib64/mysql/libmysqlclient.a"
