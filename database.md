@@ -1,28 +1,45 @@
 数据库名：EpidemicDatabase
 # 一、基本信息表
-## 1、User表（疫区人员和疫区管理员）
-+ 18位身份证号码 userID （主键）<br>
-+ 姓名 userName <br>
-+ 登陆密码 password <br>
-+ 该用户是否是疫区管理员 isAdministrator <br>
-+ 所住栋号 buildingID 
-+ 所住户号 familyID 
+## 1、User表（疫区人员）
++ 18位身份证号码 userID （主键）  
++ 姓名 userName  
++ 登陆密码 password  
++ 手机号 phone    
++ 所住栋号 buildingID  
++ 所住户号 familyID  
 ```
 CREATE TABLE `User` (
   `userID` char(18) NOT NULL, 
-  `userName` varchar(20) NOT NULL,
+  `userName` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `isAdministrator` boolean NOT NULL,
+  `phone` char(11) NOT NULL,
   `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
   PRIMARY KEY (`userID`) 
-)CHARSET=utf8;
+) CHARSET=utf8;
+```
+
+## 2、Admin表（疫区管理员）
++ 18位身份证号码 userID （主键）  
++ 姓名 userName  
++ 登陆密码 password  
++ 手机号 phone    
++ 管理的栋号 buildingID  
+```
+CREATE TABLE `Admin` (
+  `userID` char(18) NOT NULL, 
+  `userName` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone` char(11) NOT NULL,
+  `buildingID` varchar(255) NOT NULL, 
+  PRIMARY KEY (`userID`) 
+) CHARSET=utf8;
 ```
 
 # 二、小区和户相关表
 ## 1、Building表（栋）
 + 栋号 buildingID （主键）
-+ 该栋楼管理员 administratorID
++ 该栋楼管理员 administratorID  
 栋和管理员是多对多的关系，一个管理员可以管多栋楼，一栋楼可以被多个管理员管
 ```
 CREATE TABLE `Building` (
@@ -57,7 +74,7 @@ CREATE TABLE `Family` (
 + 上报人ID userID (主键1)
 + 上报日期 date （主键2）
 + 当日体温 todayTemperature
-+ 当日接触的湖北籍人员身份证号，无接触则空，多人接触以下划线分割 HuBeiContact
++ 当日接触的湖北籍人员身份证号 HuBeiContact  无接触则空，多人接触以下划线分割  
 ```
 CREATE TABLE `PhysicalCondition` (
   `userID` char(18) NOT NULL,

@@ -15,8 +15,9 @@ using namespace rapidjson;
 Document parseJson(const Request &req);
 
 // 业务接口
-string userLogin(string userID, string password);
-string userRegister (string userID, string userName, string password, string isAdministrator, string buildingID, string familyID);
+string login(string userID, string password, string isAdmin);
+string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID);
+string adminRegister(string userID, string userName, string password, string phone, string buildingID);
 
 string newAnnouncement(string id, string title, string content, string state, string date);
 string modifyAnnouncement(string id, string title, string content, string state, string date);

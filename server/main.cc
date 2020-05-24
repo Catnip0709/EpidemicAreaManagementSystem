@@ -23,13 +23,19 @@ int main(int argc,char **argv) {
 
   svr.Post("/userRegister", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string registerResult = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["isAdministrator"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString());
+    string userRegisterResult = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString());
     // 返回结果给客户端
   });
 
-  svr.Post("/userLogin", [](const Request & req, Response &res) {
+  svr.Post("/adminRegister", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string loginResult = userLogin(doc["userID"].GetString(), doc["password"].GetString());
+    string adminRegisterResult = adminRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString());
+    // 返回结果给客户端
+  });
+
+  svr.Post("/login", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string loginResult = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
     // 返回结果给客户端
   });
 
