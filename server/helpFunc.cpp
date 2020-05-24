@@ -8,3 +8,10 @@ Document parseJson(const Request &req) {
   }
   return doc;
 }
+
+//将string转换成wstring  
+wstring StringToWString(const std::string& s) {
+  wstring temp(s.length(),L' ');
+  copy(s.begin(), s.end(), temp.begin());
+  return temp;
+}

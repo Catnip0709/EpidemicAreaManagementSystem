@@ -63,5 +63,11 @@ int main(int argc,char **argv) {
     // 返回结果给客户端
   });
 
+  svr.Post("/physicalCondition", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string physicalConditionResult = physicalCondition(doc["userID"].GetString(), doc["date"].GetString(), doc["todayTemperature"].GetString(), doc["HuBeiContact"].GetString());
+    // 返回结果给客户端
+  });
+
   svr.listen("0.0.0.0", port);
 }

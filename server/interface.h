@@ -13,6 +13,7 @@ using namespace rapidjson;
 
 // 辅助函数接口
 Document parseJson(const Request &req);
+wstring StringToWString(const string& s);
 
 // 业务接口
 string login(string userID, string password, string isAdmin);
@@ -24,3 +25,5 @@ string modifyAnnouncement(string id, string title, string content, string state,
 string deleteAnnouncement(string id);
 
 string modifyInchargeBuilding(string userID, string buildingID, string isAdd);
+
+string physicalCondition(string userID, string date, string todayTemperature, string HuBeiContact);

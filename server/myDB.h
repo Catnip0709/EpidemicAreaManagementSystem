@@ -1,4 +1,5 @@
 #include <mysql/mysql.h>
+#include "interface.h"
 #include "common.h"
 using namespace std;
  

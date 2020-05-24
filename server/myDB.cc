@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <mysql/mysql.h>
 #include "myDB.h"
 using namespace std;
 

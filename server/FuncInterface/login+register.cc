@@ -50,15 +50,13 @@ string userRegister(string userID, string userName, string password, string phon
 	if(!db.exeSQL(sql, RETRIEVE)) {
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
-    }
-    
+    }    
     if (mysql_num_rows(db.result)) { // 该ID已注册过
         result = result + to_string(BEEN_REGISTER) + "}";
         return result;
     }
 
-    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + ");";
-    
+    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + ");";    
     if(!db.exeSQL(sql, CREATE)) { // 注册信息插入mysql失败
         result = result + to_string(MYSQL_ERR) + "}";
         return result;

@@ -71,18 +71,19 @@ CREATE TABLE `Family` (
 
 # 三、基本功能表
 ## 1、PhysicalCondition 每日身体情况上报表
-+ 上报人ID userID (主键1)
-+ 上报日期 date （主键2）
-+ 当日体温 todayTemperature
++ 上报人ID userID (主键1)  
++ 上报日期 date （主键2）  
++ 当日体温 todayTemperature  
 + 当日接触的湖北籍人员身份证号 HuBeiContact  无接触则空，多人接触以下划线分割  
 ```
 CREATE TABLE `PhysicalCondition` (
   `userID` char(18) NOT NULL,
-  `date` DATE NOT NULL, 
+  `date` char(10) NOT NULL, 
   `todayTemperature` double NOT NULL,
-  `HuBeiContact` varchar(255),
+  `HuBeiContact` char(10) NOT NULL,
   PRIMARY KEY (`userID`, `date`) 
 );
+INSERT INTO `PhysicalCondition` VALUE ("452223199707090000", "2020-03-23", "36.5", "0");
 ```
 
 ## 2、EquipmentStorage 防护用具存量表
@@ -133,5 +134,5 @@ CREATE TABLE `Announcement` (
   PRIMARY KEY (`id`) 
 )AUTO_INCREMENT=1 CHARSET=utf8;
 
-INSERT INTO `announcement` VALUES (1, "重要通知!", "本社区从疫情开始进行封闭管理。每次出入需要进行体温检测，出入需凭借学生证或教师证，无证不允许进入。\n", "重要", "2019-11-1");
+INSERT INTO `Announcement` (title, content, state, date) VALUES ("重要通知!", "本社区从疫情开始进行封闭管理。每次出入需要进行体温检测，出入需凭借学生证或教师证，无证不允许进入。\n", "重要", "2019-11-1");
 ```

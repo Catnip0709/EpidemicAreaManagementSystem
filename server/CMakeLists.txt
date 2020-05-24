@@ -5,7 +5,8 @@ set(SERVER_SRC
     helpFunc.cpp 
     FuncInterface/login+register.cc 
     FuncInterface/announcement.cc
-    FuncInterface/familyManagement.cc)
+    FuncInterface/familyManagement.cc
+    FuncInterface/physicalCondition.cc)
 LINK_LIBRARIES(
 "/usr/lib64/mysql/libmysqlservices.a"
 "/usr/lib64/mysql/libmysqlclient.a"
