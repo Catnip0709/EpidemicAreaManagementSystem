@@ -41,7 +41,7 @@ int main(int argc,char **argv) {
 
   svr.Post("/newAnnouncement", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
-    string newAnnouncementResult = newAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+    string newAnnouncementResult = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     // 返回结果给客户端
   });
 

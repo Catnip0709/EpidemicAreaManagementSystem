@@ -19,7 +19,7 @@ string login(string userID, string password, string isAdmin);
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID);
 string adminRegister(string userID, string userName, string password, string phone, string buildingID);
 
-string newAnnouncement(string id, string title, string content, string state, string date);
+string newAnnouncement(string title, string content, string state, string date);
 string modifyAnnouncement(string id, string title, string content, string state, string date);
 string deleteAnnouncement(string id);
 

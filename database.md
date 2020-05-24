@@ -125,13 +125,13 @@ CREATE TABLE `IsolationManagement` (
 + 公告发布日期 date
 ```
 CREATE TABLE `Announcement` (
-  `id`      int(11)      NOT NULL, 
+  `id`      int(11)      NOT NULL AUTO_INCREMENT, 
   `title`    char(20)     NOT NULL,
   `content`     TEXT NOT NULL ,
   `state`   char(50)      NOT NULL,
   `date` char(10)     NOT NULL,
   PRIMARY KEY (`id`) 
-)CHARSET=utf8;
+)AUTO_INCREMENT=1 CHARSET=utf8;
 
 INSERT INTO `announcement` VALUES (1, "重要通知!", "本社区从疫情开始进行封闭管理。每次出入需要进行体温检测，出入需凭借学生证或教师证，无证不允许进入。\n", "重要", "2019-11-1");
 ```

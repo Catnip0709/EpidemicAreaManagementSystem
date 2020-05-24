@@ -4,31 +4,26 @@
 using namespace std;
 
 // 新增公告
-string newAnnouncement(string id, string title, string content, string state, string date) {
+string newAnnouncement(string title, string content, string state, string date) {
     string result = "{\"result\":";
     MyDB db;
 	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
 
-    // 先判断该ID是否已经注册过
-    string sql = "SELECT 1 FROM `Announcement` WHERE id = \"" + id + "\" LIMIT 1;";
-	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
-    }
-    
-    if (mysql_num_rows(db.result)) { // 该ID已注册过
-        result = result + to_string(BEEN_REGISTER) + "}";
-        return result;
-    }
-
-    sql = "INSERT INTO `Announcement` VALUES (" + id + "\"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
-
+    string sql = "INSERT INTO `Announcement` (title, content, state, date) VALUES (\"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
     if(!db.exeSQL(sql, CREATE)) { // 插入失败
-        result = result + to_string(MYSQL_ERR) + "}";
+        result = result + to_string(MYSQL_ERR) + ",\"id\":-1}";
+        return result;
+    }
+ 
+    // 获取id
+    sql = "select MAX(id) from Announcement;";
+    if(!db.exeSQL(sql, RETRIEVE)) { // 查询失败
+        result = result + to_string(MYSQL_ERR) + ",\"id\":-1}";
         return result;
     }
 
-    result = result + to_string(SUCCESS) + "}";
+    result = result + to_string(SUCCESS) + ",\"id\":" + db.sqlResult[0][0] + "}";
+    cout<<result<<endl;
     return result;
 }
 
@@ -50,21 +45,12 @@ string modifyAnnouncement(string id, string title, string content, string state,
         return result;
     }
 
-    // 删掉旧的
-    sql = "DELETE FROM `Announcement` WHERE id = " + id + ";";
-    if(!db.exeSQL(sql, DELETE)) { // 删除失败
+    sql = "UPDATE `Announcement` SET title = \"" + title + "\", content = \"" + content + "\", state = \"" + state + "\", date = \"" + date + "\" WHERE id = " + id + ";";
+    if(!db.exeSQL(sql, UPDATE)) {
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
-
-    // 插入新的
-    sql = "INSERT INTO `Announcement` VALUES (" + id + ", \"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
-
-    if(!db.exeSQL(sql, CREATE)) { // 插入失败
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
-    }
-
+    
     result = result + to_string(SUCCESS) + "}";
     return result;
 }
