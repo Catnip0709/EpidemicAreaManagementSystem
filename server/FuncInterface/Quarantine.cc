@@ -66,7 +66,13 @@ string GetQuarantineInfo(string type,string id)
             }
             Value.SetInt(SUCCESS);
             jsonDoc.AddMember(Key,Value,allocator);
-            GenJsonArray("information",keyNames,FinalResult,jsonDoc);
+            GenJsonObjectArray("information",keyNames,FinalResult,jsonDoc);
+            vector<string> test={"111","2222","3333"};
+            unordered_map<string,string> cat;
+            cat["haha"]="lol";
+            cat["haha1"]="lol1";
+            GenJsonLinearArray("test",test,jsonDoc);
+            GenJsonObjectWithObjectValue("pqq",cat,jsonDoc);
         }
     }while(false);
 end:    

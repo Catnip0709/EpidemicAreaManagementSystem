@@ -40,4 +40,6 @@ string getApplyEquipment(string adminID);
 string handleApplication(string applyID, string result, string adminID, string reply, string date);
 string GetQuarantineInfo(string type,string id);
 
-void GenJsonArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
+void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
+void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
+void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);

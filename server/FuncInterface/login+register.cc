@@ -50,13 +50,8 @@ string userRegister(string userID, string userName, string password, string phon
     if(!db.exeSQL(sql, CREATE)) { 
         return genResultJson(MYSQL_ERR);
     }
-<<<<<<< HEAD
-    result = result + to_string(SUCCESS) + "}";
-    return result;
-=======
 
     return genResultJson(SUCCESS);
->>>>>>> fcd1d7f2bfa1980978ccfd1803daaf8125fa829c
 }
 
 // 管理员注册
