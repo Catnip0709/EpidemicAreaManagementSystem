@@ -3,8 +3,7 @@
 #include "../common.h"
 #include<stdlib.h>
 #define ADMIN "admin"
-using namespace std;
-
+#define USER "user"
 string GetQuarantineInfo(string type,string id)
 {
     MyDB db;
@@ -67,12 +66,59 @@ string GetQuarantineInfo(string type,string id)
             Value.SetInt(SUCCESS);
             jsonDoc.AddMember(Key,Value,allocator);
             GenJsonObjectArray("information",keyNames,FinalResult,jsonDoc);
-            vector<string> test={"111","2222","3333"};
-            unordered_map<string,string> cat;
-            cat["haha"]="lol";
-            cat["haha1"]="lol1";
-            GenJsonLinearArray("test",test,jsonDoc);
-            GenJsonObjectWithObjectValue("pqq",cat,jsonDoc);
+        }
+        else if(type==USER){
+            Value Key,Value;
+            Key.SetString("result");
+            string sql = "select * from User where userID=\""+id+"\"";
+            if(!db.exeSQL(sql, RETRIEVE)) { 
+                Value.SetInt(MYSQL_ERR);
+                jsonDoc.AddMember(Key,Value,allocator);   
+                break;
+            }
+            if(db.sqlResult.empty()){
+                Value.SetInt(HAVENT_REGISTER);
+                jsonDoc.AddMember(Key,Value,allocator);   
+                break;
+            }
+            sql="select * from Quarantine where userID=\""+id+"\"";
+            if(!db.exeSQL(sql, RETRIEVE)) { 
+                Value.SetInt(MYSQL_ERR);
+                jsonDoc.AddMember(Key,Value,allocator);   
+                break;
+            }
+            unordered_map<string,string> KeyValues;
+            if(db.sqlResult.empty()){
+                KeyValues["Quarantine"]="0";
+            }
+            else{
+                KeyValues["Quarantine"]="1";
+                KeyValues["beginDate"]=db.sqlResult[0][1];
+                KeyValues["endDate"]=db.sqlResult[0][2];
+            }
+            sql="select buildingID,familyID from User where userID=\""+id+"\"";
+            if(!db.exeSQL(sql, RETRIEVE)) { 
+                Value.SetInt(MYSQL_ERR);
+                jsonDoc.AddMember(Key,Value,allocator);   
+                break;
+            }
+            KeyValues["unit"]=db.sqlResult[0][0];
+            KeyValues["familyID"]=db.sqlResult[0][1];
+            string BuildingId=db.sqlResult[0][0];
+            string FamilyId=db.sqlResult[0][1];
+            GenJsonObjectWithObjectValue("family",KeyValues,jsonDoc);
+            sql="select userId,userName from User where BuildingId=\""+BuildingId+"\" and "+"familyID=\""+FamilyId+"\"";
+            if(!db.exeSQL(sql, RETRIEVE)) { 
+                Value.SetInt(MYSQL_ERR);
+                jsonDoc.AddMember(Key,Value,allocator);   
+                break;
+            }
+            Value.SetInt(SUCCESS);
+            jsonDoc.AddMember(Key,Value,allocator);
+            unordered_map<int ,string> ArrayKeyValues;
+            ArrayKeyValues[0]="userId";
+            ArrayKeyValues[1]="name";
+            GenJsonObjectArray("membersList",ArrayKeyValues,db.sqlResult,jsonDoc);
         }
     }while(false);
 end:    
