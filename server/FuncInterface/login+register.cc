@@ -42,7 +42,6 @@ string login(string userID, string password, string isAdmin) {
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID, string state) {
     string result = "{\"result\":";
     MyDB db;
-
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
@@ -59,7 +58,6 @@ string userRegister(string userID, string userName, string password, string phon
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
-
     result = result + to_string(SUCCESS) + "}";
     return result;
 }

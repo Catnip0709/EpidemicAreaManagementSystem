@@ -48,3 +48,26 @@ vector<string> stringCut(string str) {
 	}
 	return result;
 }
+
+void GenJsonArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc)
+{
+    if(queryResult.empty() || ArrayName.empty()){
+        return;
+    }
+    Value InfoArray(kArrayType);
+    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    assert(keyNames.size()==queryResult[0].size());
+    for(unsigned int i=0;i<queryResult.size();++i){
+        Value objValue,queryValue,keyValue;
+        objValue.SetObject();
+        for(unsigned int j=0;j<queryResult[i].size();++j){
+            queryValue.SetString(queryResult[i][j].c_str(),allocator);
+            keyValue.SetString(keyNames.find(j)->second.c_str(),allocator);
+            objValue.AddMember(keyValue,queryValue,allocator);
+        }
+        InfoArray.PushBack(objValue, allocator);
+    }
+    Value ArrayNameValue;
+    ArrayNameValue.SetString(ArrayName.c_str(),allocator);
+    jsonDoc.AddMember(ArrayNameValue,InfoArray,allocator);
+}

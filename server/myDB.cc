@@ -49,6 +49,5 @@ bool MyDB::exeSQL(string sql, int op) {
 			cout << "——————————————————" << endl;
 		}
 	}
-	
 	return true;
 }

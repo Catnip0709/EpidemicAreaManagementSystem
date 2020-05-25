@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <vector>
 #include <httplib.h>
-
+#include<unordered_map>
+#include<assert.h>
 #include "rapidjson/include/rapidjson/document.h"
 #include "rapidjson/include/rapidjson/writer.h"
 #include "rapidjson/include/rapidjson/stringbuffer.h"
@@ -35,3 +37,6 @@ string modifyEquipment(string equipmentID, string storageChange);
 string applyEquipment(string userID, string equipmentName, string amount, string date);
 string getApplyEquipment(string adminID);
 string handleApplication(string applyID, string result, string adminID, string reply, string date);
+string GetQuarantineInfo(string type,string id);
+
+void GenJsonArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);

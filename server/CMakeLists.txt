@@ -7,7 +7,9 @@ set(SERVER_SRC
     FuncInterface/announcement.cc
     FuncInterface/familyManagement.cc
     FuncInterface/physicalCondition.cc
-    FuncInterface/equipment.cc)
+    FuncInterface/equipment.cc
+    FuncInterface/Quarantine.cc
+    FuncInterface/JsonHelper.cc)
 LINK_LIBRARIES(
 "/usr/lib64/mysql/libmysqlservices.a"
 "/usr/lib64/mysql/libmysqlclient.a"
