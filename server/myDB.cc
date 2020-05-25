@@ -7,15 +7,6 @@ MyDB::MyDB() {
 		cout << "MYSQL初始化失败！Error:" << mysql_error(connection);
 		exit(1);
 	}
-}
- 
-MyDB::~MyDB() {
-	if(connection != NULL) { // 关闭数据库连接
-		mysql_close(connection);
-	}
-}
-
-bool MyDB::initDB() {
 	// 函数mysql_real_connect建立一个数据库连接
 	// 成功返回MYSQL*连接句柄，失败返回NULL
 	connection = mysql_real_connect(connection, myHost.c_str(), myUser.c_str(), myPWD.c_str(), myTable.c_str(), 0, NULL, 0);
@@ -23,7 +14,12 @@ bool MyDB::initDB() {
 		cout << "MYSQL初始化失败！Error:" << mysql_error(connection);
 		exit(1);
 	}
-	return true;
+}
+ 
+MyDB::~MyDB() {
+	if(connection != NULL) { // 关闭数据库连接
+		mysql_close(connection);
+	}
 }
  
 bool MyDB::exeSQL(string sql, int op) {

@@ -20,7 +20,7 @@ int main(int argc,char **argv) {
     Document doc = parseJson(req);
     string result;
     if (CheckParameter(req.body)) {
-      result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString());
+      result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["familyID"].GetString());
     }
     else {
       result = "{\"result\":-2}";

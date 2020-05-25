@@ -7,7 +7,6 @@ using namespace std;
 string login(string userID, string password, string isAdmin) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     string table = "User";
     if (!isAdmin.compare("1")) {
@@ -40,10 +39,9 @@ string login(string userID, string password, string isAdmin) {
 }
 
 // 普通用户注册
-string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID) {
+string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID, string state) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
@@ -56,8 +54,8 @@ string userRegister(string userID, string userName, string password, string phon
         return result;
     }
 
-    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + ");";    
-    if(!db.exeSQL(sql, CREATE)) { // 注册信息插入mysql失败
+    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + ",\"" + state +"\");";    
+    if(!db.exeSQL(sql, CREATE)) { 
         result = result + to_string(MYSQL_ERR) + "}";
         return result;
     }
@@ -70,7 +68,6 @@ string userRegister(string userID, string userName, string password, string phon
 string adminRegister(string userID, string userName, string password, string phone, string buildingID) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     // 先判断该管理员ID是否已经注册过
     string sql = "SELECT 1 FROM Admin WHERE userID = \"" + userID + "\" LIMIT 1;";

@@ -8,7 +8,6 @@ class MyDB
 public:
 	MyDB();
 	~MyDB();
-	bool initDB();
 	bool exeSQL(string sql, int op);
 
 	MYSQL *connection;

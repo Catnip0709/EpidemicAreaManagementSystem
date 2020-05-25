@@ -6,7 +6,6 @@ using namespace std;
 string physicalCondition(string userID, string date, string todayTemperature, string HuBeiContact) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";

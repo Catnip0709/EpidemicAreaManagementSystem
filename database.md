@@ -7,6 +7,7 @@
 + 手机号 phone    
 + 所住栋号 buildingID  
 + 所住户号 familyID  
++ 当前状态 state
 ```
 CREATE TABLE `User` (
   `userID` char(18) NOT NULL, 
@@ -15,6 +16,7 @@ CREATE TABLE `User` (
   `phone` char(11) NOT NULL,
   `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
+  `state`  char(20) NOT NULL,
   PRIMARY KEY (`userID`) 
 ) CHARSET=utf8;
 ```

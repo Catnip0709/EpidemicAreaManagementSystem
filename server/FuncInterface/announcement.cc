@@ -7,7 +7,6 @@ using namespace std;
 string newAnnouncement(string title, string content, string state, string date) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     string sql = "INSERT INTO `Announcement` (title, content, state, date) VALUES (\"" + title + "\", \"" + content + "\", \"" + state + "\", \"" + date + "\");";
     if (!db.exeSQL(sql, CREATE)) { // 插入失败
@@ -23,7 +22,6 @@ string newAnnouncement(string title, string content, string state, string date) 
 string modifyAnnouncement(string id, string title, string content, string state, string date) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM `Announcement` WHERE id = \"" + id + "\" LIMIT 1;";
@@ -51,7 +49,6 @@ string modifyAnnouncement(string id, string title, string content, string state,
 string deleteAnnouncement(string id) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB();
 
     string sql = "DELETE FROM `Announcement` WHERE id = " + id + ";";
     if(!db.exeSQL(sql, CREATE)) { // 删除失败

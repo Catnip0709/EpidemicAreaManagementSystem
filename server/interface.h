@@ -19,7 +19,7 @@ vector<string> stringCut(string str);
 
 // 业务接口，实现于FuncInterface文件夹下
 string login(string userID, string password, string isAdmin);
-string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID);
+string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID, string state);
 string adminRegister(string userID, string userName, string password, string phone, string buildingID);
 
 string newAnnouncement(string title, string content, string state, string date);
