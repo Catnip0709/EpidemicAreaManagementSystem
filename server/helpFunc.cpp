@@ -54,7 +54,7 @@ string genResultJson(int errCode) {
   StringBuffer s;
   Writer<StringBuffer> writer(s);
   writer.StartObject();
-  writer.Key("result:");
+  writer.Key("result");
   writer.Uint(errCode);
   writer.EndObject();
   string result = s.GetString();
