@@ -71,3 +71,14 @@ void GenJsonArray(const string& ArrayName,const unordered_map<int,string>& keyNa
     ArrayNameValue.SetString(ArrayName.c_str(),allocator);
     jsonDoc.AddMember(ArrayNameValue,InfoArray,allocator);
 }
+// 简单的返回json，只有一个key
+string genResultJson(int errCode) {
+  StringBuffer s;
+  Writer<StringBuffer> writer(s);
+  writer.StartObject();
+  writer.Key("result");
+  writer.Uint(errCode);
+  writer.EndObject();
+  string result = s.GetString();
+  return result;
+}

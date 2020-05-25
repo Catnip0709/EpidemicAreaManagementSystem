@@ -16,7 +16,7 @@ CREATE TABLE `User` (
   `phone` char(11) NOT NULL,
   `buildingID` int NOT NULL, 
   `familyID` int NOT NULL, 
-  `state`  char(20) NOT NULL,
+  `state`  int NOT NULL,
   PRIMARY KEY (`userID`) 
 ) CHARSET=utf8;
 ```

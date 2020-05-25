@@ -10,8 +10,7 @@ string newEquipment(string equipmentName, string storage) {
 
     string sql = "INSERT INTO EquipmentStorage (equipmentName,storage) VALUES (\"" + equipmentName + "\","+ storage + ");";
     if(!db.exeSQL(sql, CREATE)) { // 插入失败
-        result = result + to_string(MYSQL_ERR) + ",\"id\":-1}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
 
     result = result + to_string(SUCCESS) + ",\"id\":" + to_string(mysql_insert_id(db.connection)) + "}";
@@ -20,28 +19,23 @@ string newEquipment(string equipmentName, string storage) {
 
 // 管理员修改物资存量
 string modifyEquipment(string equipmentID, string storageChange) {
-    string result = "{\"result\":";
     MyDB db;
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM EquipmentStorage WHERE equipmentID = \"" + equipmentID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }    
     if (mysql_num_rows(db.result) == 0) { // 不存在该物资ID
-        result = result + to_string(HAVENT_REGISTER) + "}";
-        return result;
+        return genResultJson(HAVENT_REGISTER);
     }
 
     sql = "UPDATE EquipmentStorage SET storage = storage" + storageChange + " WHERE equipmentID = " + equipmentID + ";";
     if(!db.exeSQL(sql, UPDATE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
     
-    result = result + to_string(SUCCESS) + "}";
-    return result;
+    return genResultJson(SUCCESS);
 }
 
 // 人民提出物资申请
@@ -52,20 +46,17 @@ string applyEquipment(string userID, string equipmentName, string amount, string
     // 先判断该userID是否已经注册过，顺便获取栋号
     string sql = "SELECT buildingID FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + ", \"applyID\":-1}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
     if (!mysql_num_rows(db.result)) { // 该ID尚未注册
-        result = result + to_string(HAVENT_REGISTER) + ", \"applyID\":-1}";
-        return result;
+        return genResultJson(HAVENT_REGISTER);
     }
     string buildingID = db.sqlResult[0][0];
 
     // 提交申请
     sql = "INSERT INTO ApplyEquipment (userID,buildingID,equipmentName,amount,date,state) VALUES (\"" + userID + "\"," + buildingID + ",\"" + equipmentName + "\"," + amount + ",\"" + date + "\",2);";
     if (!db.exeSQL(sql, CREATE)) {
-        result = result + to_string(MYSQL_ERR) + ", \"applyID\":-1}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
 
     result = result + to_string(SUCCESS) + ",\"applyID\":" + to_string(mysql_insert_id(db.connection)) + "}";
@@ -80,12 +71,10 @@ string getApplyEquipment(string adminID) {
     // 查看该adminID是否注册了管理员，以及他管理的栋号
     string sql = "SELECT buildingID FROM Admin WHERE userID = \"" + adminID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }    
     if (mysql_num_rows(db.result) == 0) { 
-        result = result + to_string(HAVENT_REGISTER) + "}";
-        return result;
+        return genResultJson(HAVENT_REGISTER);
     }
 
     vector<string> buildingID = stringCut(db.sqlResult[0][0]);
@@ -104,8 +93,7 @@ string getApplyEquipment(string adminID) {
     }
     sql += ";";
     if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }  
     if (!db.sqlResult.size()) { // 管理员管的栋没有申请信息
         result = "{\"result\":0,\"applyNum\":0, \"applyInfo\": []}";
@@ -143,34 +131,28 @@ string getApplyEquipment(string adminID) {
 
 // 管理员处理某一物资申请（同意/驳回）
 string handleApplication(string applyID, string result, string adminID, string reply, string date) {
-    string Result = "{\"result\":";
     MyDB db;
 
     // 先判断该applyID是否已经注册过
     string sql = "SELECT 1 FROM ApplyEquipment WHERE applyID = \"" + applyID + "\" LIMIT 1;";
 	if (!db.exeSQL(sql, RETRIEVE)) {
-        Result = Result + to_string(MYSQL_ERR) + "}";
-        return Result;
+        return genResultJson(MYSQL_ERR);
     }
     if (!mysql_num_rows(db.result)) { // 该applyID尚未注册
-        Result = Result + to_string(HAVENT_REGISTER) + "}";
-        return Result;
+        return genResultJson(HAVENT_REGISTER);
     }
 
     // 插入HandleApplication表格
     sql = "INSERT INTO HandleApplication VALUE(\"" + applyID + "\"," + result + ",\"" + adminID + "\",\"" + reply + "\",\"" + date + "\");";
     if (!db.exeSQL(sql, CREATE)) {
-        Result = Result + to_string(MYSQL_ERR) + "}";
-        return Result;
+        return genResultJson(MYSQL_ERR);
     }
 
     // 将ApplyEquipment表格对应订单的当前状态更正
     sql = "UPDATE ApplyEquipment SET state = " + result + " WHERE applyID = " + applyID + ";";
     if (!db.exeSQL(sql, UPDATE)) {
-        Result = Result + to_string(MYSQL_ERR) + "}";
-        return Result;
+        return genResultJson(MYSQL_ERR);
     }
 
-    Result = Result + to_string(SUCCESS) + "}";
-    return Result;
+    return genResultJson(SUCCESS);
 }
