@@ -15,79 +15,65 @@ string login(string userID, string password, string isAdmin) {
 
     string sql = "SELECT password FROM " + table +" WHERE userID = \"" + userID + "\" LIMIT 1;";
     if (!db.exeSQL(sql, RETRIEVE)) { // MYSQL执行失败
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
+        
     }
     
     if (!mysql_num_rows(db.result)) { // 该ID尚未注册
-        result = result + to_string(HAVENT_REGISTER) + "}";
-        return result;
+        return genResultJson(HAVENT_REGISTER);
     }
     
     if (!(db.sqlResult.size() == 1 && db.sqlResult[0].size() == 1)) { // 数据出错，应该只得到一个结果
-        result = result + to_string(DATA_ERR) + "}";
-        return result;
+        return genResultJson(DATA_ERR);
     } 
     
     if (db.sqlResult[0][0].compare(password)) { // 密码错误，db.sqlResult[0][0]是正确密码
-        result = result + to_string(PWD_ERR) + "}";
-        return result;
+        return genResultJson(PWD_ERR);
     }
     
-    result = result + to_string(SUCCESS) + "}";   
-    return result;
+    return genResultJson(SUCCESS);
 }
 
 // 普通用户注册
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID, string state) {
-    string result = "{\"result\":";
     MyDB db;
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }    
     if (mysql_num_rows(db.result)) { // 该ID已注册过
-        result = result + to_string(BEEN_REGISTER) + "}";
-        return result;
+        return genResultJson(BEEN_REGISTER);
     }
 
-    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + ",\"" + state +"\");";    
+    sql = "INSERT INTO User VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", " + buildingID + ", " + familyID + "," + state +");";    
     if(!db.exeSQL(sql, CREATE)) { 
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
 
-    result = result + to_string(SUCCESS) + "}";
-    return result;
+    return genResultJson(SUCCESS);
 }
 
 // 管理员注册
 string adminRegister(string userID, string userName, string password, string phone, string buildingID) {
-    string result = "{\"result\":";
     MyDB db;
 
     // 先判断该管理员ID是否已经注册过
     string sql = "SELECT 1 FROM Admin WHERE userID = \"" + userID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
     
     if (mysql_num_rows(db.result)) { // 该ID已注册过
-        result = result + to_string(BEEN_REGISTER) + "}";
-        return result;
+        return genResultJson(BEEN_REGISTER);
     }
 
     sql = "INSERT INTO Admin VALUES (\"" + userID + "\", \"" + userName + "\", \"" + password + "\", " + phone + ", \"" + buildingID + "\");";
     
     if(!db.exeSQL(sql, CREATE)) { // 注册信息插入mysql失败
-        result = result + to_string(MYSQL_ERR) + "}";
-        return result;
+        return genResultJson(MYSQL_ERR);
     }
 
-    result = result + to_string(SUCCESS) + "}";
-    return result;
+    return genResultJson(SUCCESS);
 }

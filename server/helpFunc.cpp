@@ -48,3 +48,15 @@ vector<string> stringCut(string str) {
 	}
 	return result;
 }
+
+// 简单的返回json，只有一个key
+string genResultJson(int errCode) {
+  StringBuffer s;
+  Writer<StringBuffer> writer(s);
+  writer.StartObject();
+  writer.Key("result:");
+  writer.Uint(errCode);
+  writer.EndObject();
+  string result = s.GetString();
+  return result;
+}
