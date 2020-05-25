@@ -1,8 +1,9 @@
-include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/cpp-httplib-master ${PROJECT_SOURCE_DIR}/server)
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/cpp-httplib-master/out ${PROJECT_SOURCE_DIR}/server)
 set(SERVER_SRC 
     main.cc 
     myDB.cc 
-    helpFunc.cpp 
+    helpFunc.cpp
+    httplib.cc 
     FuncInterface/login+register.cc 
     FuncInterface/announcement.cc
     FuncInterface/familyManagement.cc
