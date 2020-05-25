@@ -7,7 +7,7 @@ using namespace std;
 string login(string userID, string password, string isAdmin) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     string table = "User";
     if (!isAdmin.compare("1")) {
@@ -43,7 +43,7 @@ string login(string userID, string password, string isAdmin) {
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
@@ -70,7 +70,7 @@ string userRegister(string userID, string userName, string password, string phon
 string adminRegister(string userID, string userName, string password, string phone, string buildingID) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 先判断该管理员ID是否已经注册过
     string sql = "SELECT 1 FROM Admin WHERE userID = \"" + userID + "\" LIMIT 1;";

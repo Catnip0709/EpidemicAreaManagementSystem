@@ -15,10 +15,10 @@ MyDB::~MyDB() {
 	}
 }
 
-bool MyDB::initDB(string host, string user, string pwd, string db_name) {
+bool MyDB::initDB() {
 	// 函数mysql_real_connect建立一个数据库连接
 	// 成功返回MYSQL*连接句柄，失败返回NULL
-	connection = mysql_real_connect(connection, host.c_str(), user.c_str(), pwd.c_str(), db_name.c_str(), 0, NULL, 0);
+	connection = mysql_real_connect(connection, myHost.c_str(), myUser.c_str(), myPWD.c_str(), myTable.c_str(), 0, NULL, 0);
 	if(connection == NULL) {
 		cout << "MYSQL初始化失败！Error:" << mysql_error(connection);
 		exit(1);

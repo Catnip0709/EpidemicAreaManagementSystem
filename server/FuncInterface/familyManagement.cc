@@ -7,7 +7,7 @@ using namespace std;
 string modifyInchargeBuilding(string userID, string buildingID, string isAdd) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 查看该userID是否已经注册过、是不是管理员
     string sql = "SELECT isAdministrator FROM User WHERE userID = \"" + userID + "\"  LIMIT 1;";

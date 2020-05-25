@@ -7,7 +7,7 @@ using namespace std;
 string newEquipment(string equipmentName, string storage) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     string sql = "INSERT INTO EquipmentStorage (equipmentName,storage) VALUES (\"" + equipmentName + "\","+ storage + ");";
     if(!db.exeSQL(sql, CREATE)) { // 插入失败
@@ -23,7 +23,7 @@ string newEquipment(string equipmentName, string storage) {
 string modifyEquipment(string equipmentID, string storageChange) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM EquipmentStorage WHERE equipmentID = \"" + equipmentID + "\" LIMIT 1;";
@@ -50,7 +50,7 @@ string modifyEquipment(string equipmentID, string storageChange) {
 string applyEquipment(string userID, string equipmentName, string amount, string date) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 先判断该userID是否已经注册过，顺便获取栋号
     string sql = "SELECT buildingID FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
@@ -79,7 +79,7 @@ string applyEquipment(string userID, string equipmentName, string amount, string
 string getApplyEquipment(string adminID) {
     string result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 查看该adminID是否注册了管理员，以及他管理的栋号
     string sql = "SELECT buildingID FROM Admin WHERE userID = \"" + adminID + "\" LIMIT 1;";
@@ -149,7 +149,7 @@ string getApplyEquipment(string adminID) {
 string handleApplication(string applyID, string result, string adminID, string reply, string date) {
     string Result = "{\"result\":";
     MyDB db;
-	db.initDB(db.myHost, db.myUser, db.myPWD, db.myTable);
+	db.initDB();
 
     // 先判断该applyID是否已经注册过
     string sql = "SELECT 1 FROM ApplyEquipment WHERE applyID = \"" + applyID + "\" LIMIT 1;";
