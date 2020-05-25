@@ -27,9 +27,13 @@ bool MyDB::initDB(string host, string user, string pwd, string db_name) {
 }
  
 bool MyDB::exeSQL(string sql, int op) {
+	if (!CheckSQL(sql)) { //sql被注入
+		cout << "sql Error: sql被注入";
+		return false;
+	}
 	sqlResult.clear();
 	
-	if(mysql_query(connection, sql.c_str())) { // mysql_query()执行成功返回0，失败返回非0值
+	if (mysql_query(connection, sql.c_str())) { // mysql_query()执行成功返回0，失败返回非0值
 		cout << "Query Error:" << mysql_error(connection);
 		return false;
 	}

@@ -74,7 +74,7 @@ CREATE TABLE `Family` (
 + 上报人ID userID (主键1)  
 + 上报日期 date （主键2）  
 + 当日体温 todayTemperature  
-+ 当日接触的湖北籍人员身份证号 HuBeiContact  无接触则空，多人接触以下划线分割  
++ 当日是否与湖北籍人员接触 HuBeiContact  无接触=0，有接触=1  
 ```
 CREATE TABLE `PhysicalCondition` (
   `userID` char(18) NOT NULL,
@@ -104,42 +104,48 @@ INSERT INTO EquipmentStorage (equipmentName,storage) VALUES ("防护手套",100)
 ## 3、ApplyEquipment 物资申请记录表
 + 申请订单ID applyID
 + 申请人身份证 userID
++ 申请人居住栋号 buildingID
 + 申请的物资名称 equipmentName
-+ 申请数量 amount
-+ 申请日期 date
++ 申请数量 amount  
++ 申请日期 date  
++ 订单当前状态 state （0：已驳回；1：已同意；2：未处理）
 ```
 CREATE TABLE `ApplyEquipment` (
   `applyID` int NOT NULL AUTO_INCREMENT,
   `userID` char(18) NOT NULL,
+  `buildingID` INT NOT NULL,
   `equipmentName` char(100) NOT NULL,
   `amount` int NOT NULL, 
-  `date` varchar(10),
+  `date` varchar(10) NOT NULL,
+  `state` INT NOT NULL,
   PRIMARY KEY (`applyID`) 
 )AUTO_INCREMENT=10000 CHARSET=utf8;
 
-INSERT INTO ApplyEquipment (userID,equipmentName,amount,date) VALUES ("452223199707090000","手套",3,"2020-05-28");
+INSERT INTO ApplyEquipment (userID,buildingID,equipmentName,amount,date) VALUES ("452223199707090000",2,"手套",3,"2020-05-28",2);
 ```
 
+## 4、HandleApplication 管理员处理申请记录表  
+++ 申请订单ID  applyID 
+++ 处理结果    result 
+++ 处理人      adminID
+++ 管理员回执  reply
+++ 处理日期    date
+```
+CREATE TABLE `HandleApplication` (
+  `applyID` int NOT NULL AUTO_INCREMENT,
+  `result` INT NOT NULL,
+  `adminID` char(18) NOT NULL,
+  `reply` TEXT, 
+  `date` varchar(10) NOT NULL,
+  PRIMARY KEY (`applyID`) 
+)CHARSET=utf8;
+```
 
-## 4、关系网络管理
+## 5、关系网络管理
 ？
 
-## 5、IsolationManagement  隔离管理
-+ 隔离人员身份证 userID （主键1）
-+ 当前日期 date （主键2）
-+ 是否是病患 isPatient
-+ 已隔离天数 days
+## 6、IsolationManagement  隔离管理
 
-病患人员的隔离天数置为-1，需要一直隔离直到治愈后（isPatient转为false）再隔离14天才可解除隔离。普通隔离人员（疑似人员、返工人员登）隔离14天后解除隔离。
-```
-CREATE TABLE `IsolationManagement` (
-  `userID` char(18) NOT NULL,
-  `date` DATE NOT NULL,
-  `isPatient` boolean NOT NULL,
-  `days` int NOT NULL, 
-  PRIMARY KEY (`userID`, `date`) 
-);
-```
 
 # 三、公告栏
 ## 公告表

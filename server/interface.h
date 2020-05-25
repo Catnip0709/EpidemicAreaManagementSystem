@@ -11,11 +11,13 @@ using namespace std;
 using namespace httplib;
 using namespace rapidjson;
 
-// 辅助函数接口
+// 辅助函数接口，实现于helpFunc.cpp
 Document parseJson(const Request &req);
-wstring StringToWString(const string& s);
+bool CheckSQL(string sql);
+bool CheckParameter(string param);
+vector<string> stringCut(string str);
 
-// 业务接口
+// 业务接口，实现于FuncInterface文件夹下
 string login(string userID, string password, string isAdmin);
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID);
 string adminRegister(string userID, string userName, string password, string phone, string buildingID);
@@ -31,3 +33,5 @@ string physicalCondition(string userID, string date, string todayTemperature, st
 string newEquipment(string equipmentName, string storage);
 string modifyEquipment(string equipmentID, string storageChange);
 string applyEquipment(string userID, string equipmentName, string amount, string date);
+string getApplyEquipment(string adminID);
+string handleApplication(string applyID, string result, string adminID, string reply, string date);
