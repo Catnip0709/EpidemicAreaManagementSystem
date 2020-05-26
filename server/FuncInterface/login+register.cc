@@ -36,7 +36,6 @@ string login(string userID, string password, string isAdmin) {
 // 普通用户注册
 string userRegister(string userID, string userName, string password, string phone, string buildingID, string familyID, string state) {
     MyDB db;
-
     // 先判断该ID是否已经注册过
     string sql = "SELECT 1 FROM User WHERE userID = \"" + userID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {

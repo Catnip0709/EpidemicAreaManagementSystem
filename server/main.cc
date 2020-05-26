@@ -170,6 +170,10 @@ int main(int argc,char **argv) {
     }
     res.set_content(result,"application/json");
   });
-
+  svr.Post("/QuarantineInformation", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
+    res.set_content(result,"application/json");
+  });
   svr.listen("0.0.0.0", port);
 }
