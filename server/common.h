@@ -18,6 +18,7 @@
 #define NOT_INCHARGE        1004 // 当前管理员对该栋楼无管理权限
 #define ILLEGAL_REQUEST     1005 // 非法请求
 #define NOT_ADMINISTRATOR   1006 // 该用户不是管理员
+#define DATA_NULL           1007 // 数据缺失
 
 #include<iostream>
 #include<string>

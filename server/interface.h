@@ -34,6 +34,7 @@ string modifyInchargeBuilding(string userID, string buildingID, string isAdd);
 
 string physicalCondition(string userID, string date, string todayTemperature, string HuBeiContact);
 string epidemicSituation(string date);
+string viewPhysicalCondition(string date);
 
 string newEquipment(string equipmentName, string storage);
 string modifyEquipment(string equipmentID, string storageChange);

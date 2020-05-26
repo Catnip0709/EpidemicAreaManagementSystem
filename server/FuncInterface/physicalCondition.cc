@@ -29,6 +29,9 @@ string epidemicSituation(string date) {
     Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
     MyDB db;
 
+    // 0、添加result信息（如果出错会直接返回，故可直接添加成功信息）
+    jsonResult.jsonDoc.AddMember("result", "0", allocator);
+
     // 1、获取当日填报了健康状况的人数和未填报的人数  todayList
     string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = " + date + ";";
     if(!db.exeSQL(sql, RETRIEVE)) {
@@ -128,5 +131,42 @@ string epidemicSituation(string date) {
     // 5.6 加入jsonResult.jsonDoc
     jsonResult.jsonDoc.AddMember("trend", trend, allocator);
 
+    return jsonResult.genJson(allocator);
+}
+
+string viewPhysicalCondition(string date) {    
+    CGenJson jsonResult;
+    Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
+    MyDB db;
+
+    // 1、添加result信息
+    jsonResult.jsonDoc.AddMember("result", "0", allocator);
+
+    string sql = "SELECT * FROM PhysicalCondition WHERE date = \"" + date + "\"";
+    if(!db.exeSQL(sql, RETRIEVE)) {
+        return CGenJson::genResultJson(MYSQL_ERR);
+    }
+    if (!mysql_num_rows(db.result)) { // 无数据
+        return CGenJson::genResultJson(DATA_NULL);
+    }
+    // 2、pageTotal
+    int intPageTotal = db.sqlResult.size();
+    string pageTotalValue = to_string(intPageTotal);
+    Value pageTotal;
+    pageTotal.SetString(pageTotalValue.c_str(), allocator);
+    jsonResult.jsonDoc.AddMember("pageTotal", pageTotal, allocator);
+
+    // 3、info数组
+    vector<vector<string>> infoData = db.sqlResult;
+    vector<string> infoKey = {"userID", "date", "todayTemperature", "HuBeiContact"};
+    vector<Value> infoPart(intPageTotal);
+    for (int i = 0; i < intPageTotal; ++i) {
+        jsonResult.genInsideJson(infoPart[i], infoKey, infoData[i], allocator);
+    }
+    Value info(kArrayType);
+    for (int i = 0; i < intPageTotal; ++i) { // 每一组信息
+        info.PushBack(infoPart[i], allocator);
+    }
+    jsonResult.jsonDoc.AddMember("info", info, allocator);
     return jsonResult.genJson(allocator);
 }

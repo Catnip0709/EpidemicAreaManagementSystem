@@ -123,6 +123,17 @@ int main(int argc,char **argv) {
     }
     res.set_content(result,"application/json");
   });
+  svr.Post("/viewPhysicalCondition", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result;
+    if (CheckParameter(req.body)) {
+      result = viewPhysicalCondition(doc["date"].GetString());
+    }
+    else {
+      result = "{\"result\":\"-2\"}";
+    }
+    res.set_content(result,"application/json");
+  });
 
   svr.Post("/newEquipment", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
