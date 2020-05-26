@@ -5,6 +5,7 @@
 #include <httplib.h>
 #include <unordered_map>
 #include <assert.h>
+#include <time.h>
 #include "rapidjson/include/rapidjson/document.h"
 #include "rapidjson/include/rapidjson/writer.h"
 #include "rapidjson/include/rapidjson/stringbuffer.h"
@@ -17,7 +18,8 @@ using namespace rapidjson;
 Document parseJson(const Request &req);
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
-vector<string> stringCut(string str);
+vector<string> stringCut(string str, string cut);
+vector<string> get7date();
 
 // 业务接口，实现于FuncInterface文件夹下
 string login(string userID, string password, string isAdmin);
@@ -31,6 +33,7 @@ string deleteAnnouncement(string id);
 string modifyInchargeBuilding(string userID, string buildingID, string isAdd);
 
 string physicalCondition(string userID, string date, string todayTemperature, string HuBeiContact);
+string epidemicSituation(string date);
 
 string newEquipment(string equipmentName, string storage);
 string modifyEquipment(string equipmentID, string storageChange);
@@ -39,6 +42,7 @@ string getApplyEquipment(string adminID);
 string handleApplication(string applyID, string result, string adminID, string reply, string date);
 string GetQuarantineInfo(string type,string id);
 
+// 生成json接口
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
 void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
 void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);

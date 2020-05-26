@@ -29,7 +29,7 @@ string epidemicSituation(string date) {
     Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
     MyDB db;
 
-    // 1、获取当日填报了健康状况的人数和未填报的人数
+    // 1、获取当日填报了健康状况的人数和未填报的人数  todayList
     string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = " + date + ";";
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
@@ -47,7 +47,7 @@ string epidemicSituation(string date) {
     jsonResult.genInsideJson(todayList, todayListKey, todayListValue, allocator);
     jsonResult.jsonDoc.AddMember("todayList", todayList, allocator);
 
-    // 2、获取当前总的（2=隔离、3=疑似、4=确诊、5=死亡）人数
+    // 2、获取当前总的（2=隔离、3=疑似、4=确诊、5=死亡）人数 total
     Value total;
     vector<string> totalKey = {"segregation", "suspected", "diagnosis", "die"};
     vector<string> totalValue;    
@@ -61,6 +61,72 @@ string epidemicSituation(string date) {
     jsonResult.genInsideJson(total, totalKey, totalValue, allocator);
     jsonResult.jsonDoc.AddMember("total", total, allocator);
 
-    // 3、获取今日新增的（2=隔离、3=疑似、4=确诊、5=死亡）人数 = 今日当前-昨天总
+    // 3、获取今日新增的（2=隔离、3=疑似、4=确诊、5=死亡）人数 = 今日当前-昨天总数  todayIncrease
+    Value todayIncrease;
+    vector<string> date7 = get7date();
+    sql = "SELECT segregation, suspected, diagnosis, die FROM SpecialStateDailyRecord WHERE date = \"" + date7[5] + "\";";
+    if(!db.exeSQL(sql, RETRIEVE)) {
+        return CGenJson::genResultJson(MYSQL_ERR);
+    }
+    if (mysql_num_rows(db.result) != 1 || mysql_num_fields(db.result) != 4) {
+        return CGenJson::genResultJson(DATA_ERR);
+    }
+    vector<string> yesterdayTotal = db.sqlResult[0];
+    vector<string> todayIncreaseValue;
+    for(int i = 0; i < 4; ++i) {
+        todayIncreaseValue.push_back(to_string((atoi(totalValue[i].c_str()) - atoi(yesterdayTotal[i].c_str()))));
+    }
+    jsonResult.genInsideJson(todayIncrease, totalKey, todayIncreaseValue, allocator);
+    jsonResult.jsonDoc.AddMember("todayIncrease", todayIncrease, allocator);
 
+    // 4、日期数组
+    Value KEYdate(kArrayType);
+    jsonResult.genInsideArray1(KEYdate, date7, allocator);
+
+    // 5、趋势变化
+    // 5.1 获取数据（4个数组）
+    vector<vector<string>> trendDataValue;
+    for (int i = 0; i < 4; ++i) {
+        vector<string> trendDataValuePart;
+        for (int j = 0; j < 6; ++j) { // 前6天数据
+            sql = "SELECT " + totalKey[i] + " FROM SpecialStateDailyRecord WHERE date = \"" + date7[j] + "\";";
+            if(!db.exeSQL(sql, RETRIEVE)) {
+                return CGenJson::genResultJson(MYSQL_ERR);
+            }
+            trendDataValuePart.push_back(db.sqlResult[0][0]);
+        }
+        trendDataValuePart.push_back(totalValue[i]); // 当天数据
+        trendDataValue.push_back(trendDataValuePart);
+    }
+    // 5.2 生成label
+    Value trendLableValue[4];
+    vector<string> trendLabelValueStr = {"隔离", "疑似", "确诊", "死亡"};
+    for (int i = 0; i < trendLabelValueStr.size(); ++i) {
+        trendLableValue[i].SetString(trendLabelValueStr[i].c_str(), allocator);
+    }
+    // 5.3 生成data
+    Value *trendDataArray[4];
+    for (int i = 0; i < 4; ++i) {
+        trendDataArray[i] = new Value(kArrayType);
+        jsonResult.genInsideArray1(*trendDataArray[i], trendDataValue[i], allocator);
+    }
+
+    // 5.4 label和data合起来成为一个小json
+    Value lableAndData[4];
+    for (int i = 0; i < 4; ++i) {
+        lableAndData[i].SetObject();
+        lableAndData[i].AddMember("label", trendLableValue[i], allocator);
+        lableAndData[i].AddMember("data", *trendDataArray[i], allocator);
+    }
+
+    // 5.5 生成数组
+    Value trend(kArrayType);
+    for (int i = 0; i < 4; ++i) {
+        trend.PushBack(lableAndData[i], allocator);
+    }
+
+    // 5.6 加入jsonResult.jsonDoc
+    jsonResult.jsonDoc.AddMember("trend", trend, allocator);
+
+    return jsonResult.genJson(allocator);
 }

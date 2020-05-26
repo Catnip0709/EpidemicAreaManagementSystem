@@ -91,7 +91,7 @@ string getApplyEquipment(string adminID) {
         return CGenJson::genResultJson(HAVENT_REGISTER);
     }
 
-    vector<string> buildingID = stringCut(db.sqlResult[0][0]);
+    vector<string> buildingID = stringCut(db.sqlResult[0][0],"_");
     if (!buildingID.size()) { // 该管理员没有在管的栋
         return "{\"result\":0,\"applyNum\":0, \"applyInfo\": []}";
     }
