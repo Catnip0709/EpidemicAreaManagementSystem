@@ -127,11 +127,11 @@ INSERT INTO ApplyEquipment (userID,buildingID,equipmentName,amount,date) VALUES 
 ```
 
 ## 4、HandleApplication 管理员处理申请记录表  
-++ 申请订单ID  applyID 
-++ 处理结果    result 
-++ 处理人      adminID
-++ 管理员回执  reply
-++ 处理日期    date
++ 申请订单ID  applyID 
++ 处理结果    result  
++ 处理人      adminID  
++ 管理员回执  reply  
++ 处理日期    date  
 ```
 CREATE TABLE `HandleApplication` (
   `applyID` int NOT NULL AUTO_INCREMENT,
@@ -147,15 +147,35 @@ CREATE TABLE `HandleApplication` (
 ？
 
 ## 6、IsolationManagement  隔离管理
+## 每日特殊情况用户记录  SpecialStateDailyRecord
++ 日期 date （主键）
++ 当日新增的隔离人数 segregation
++ 当日新增的疑似人数 suspected
++ 当日新增的确诊人数 diagnosis
++ 当日新增的死亡人数 die
+```
+CREATE TABLE `SpecialStateDailyRecord` (
+  `date`              char(10)   NOT NULL, 
+  `segregation`       INT        NOT NULL,
+  `suspected`         INT        NOT NULL,
+  `diagnosis`         INT        NOT NULL,
+  `die`               INT        NOT NULL,
+  `increSegregation`  INT        NOT NULL,
+  `increSpected`      INT        NOT NULL,
+  `increSuspected`    INT        NOT NULL,
+  `increDie`          INT        NOT NULL,
+  PRIMARY KEY (`date`) 
+)CHARSET=utf8;
+```
 
 
 # 三、公告栏
-## 公告表
-+ 公告id id （主键）
-+ 公告标题 title
-+ 公告内容 content
-+ 公告级别 state
-+ 公告发布日期 date
+## 公告表 Announcement
++ 公告id id （主键）  
++ 公告标题 title  
++ 公告内容 content  
++ 公告级别 state  
++ 公告发布日期 date  
 ```
 CREATE TABLE `Announcement` (
   `id`      int(11)      NOT NULL AUTO_INCREMENT, 

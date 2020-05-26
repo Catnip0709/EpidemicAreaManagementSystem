@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <httplib.h>
+#include <unordered_map>
 
 #include "rapidjson/include/rapidjson/document.h"
 #include "rapidjson/include/rapidjson/writer.h"
@@ -16,7 +17,6 @@ Document parseJson(const Request &req);
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
 vector<string> stringCut(string str);
-string genResultJson(int errCode);
 
 // 业务接口，实现于FuncInterface文件夹下
 string login(string userID, string password, string isAdmin);

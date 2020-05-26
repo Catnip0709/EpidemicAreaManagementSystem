@@ -3,6 +3,7 @@ set(SERVER_SRC
     main.cc 
     myDB.cc 
     helpFunc.cpp 
+    genJson.cpp
     FuncInterface/login+register.cc 
     FuncInterface/announcement.cc
     FuncInterface/familyManagement.cc
