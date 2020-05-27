@@ -59,3 +59,99 @@ string modifyInchargeBuilding(string userID, string buildingID, string isAdd) {
 
     return CGenJson::genResultJson(SUCCESS);
 }
+
+// 管理员查看所有用户信息
+string viewUserInfo(string userName, string buildingID, string familyID, string phone) {
+    CGenJson jsonResult;
+    Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
+    MyDB db;
+    // 1、添加result信息，如果失败就直接调用genResultJson返回，这里可以直接拼接0
+    jsonResult.jsonDoc.AddMember("result", "0", allocator);
+    
+    string sql = "SELECT userID, userName, phone, buildingID, familyID, state FROM User";
+    
+    if (!(userName.empty() && buildingID.empty() && familyID.empty() && phone.empty())) {// 至少一项不为空        
+        bool count = false; // 当前变量之前的变量是否有值（为了拼接sql）
+        sql += " WHERE ";
+        if (!userName.empty()) {
+            count = true;
+            sql = sql + "userName = \"" + userName + "\"";
+        }
+        if (!buildingID.empty()){
+            if(count) {
+                sql = sql + " and buildingID = " + buildingID;
+            }
+            else {
+                sql = sql + "buildingID = " + buildingID;
+            }
+            count = true;
+        }
+        if (!familyID.empty()){
+            if(count) {
+                sql = sql + " and familyID = " + familyID;
+            }
+            else {
+                sql = sql + "familyID = " + familyID;
+            }
+            count = true;
+        }
+        if (!phone.empty()){
+            if(count) {
+                sql = sql + " and phone = \"" + phone + "\"";
+            }
+            else {
+                sql = sql + "phone = \"" + phone + "\"";
+            }
+            count = true;
+        }
+    }
+    sql += ";";
+    cout<<sql<<endl;
+    if(!db.exeSQL(sql, RETRIEVE)) {
+        return CGenJson::genResultJson(MYSQL_ERR);
+    }
+
+    // 2、添加pageTotal信息
+    int intPageTotal = db.sqlResult.size();
+    string pageTotalValue = to_string(intPageTotal);
+    Value pageTotal;
+    pageTotal.SetString(pageTotalValue.c_str(), allocator);
+    jsonResult.jsonDoc.AddMember("pageTotal", pageTotal, allocator);
+
+    // 3、添加info信息    
+    Value info(kArrayType);
+    if (!intPageTotal) {
+        jsonResult.jsonDoc.AddMember("info", kArrayType, allocator);
+        return jsonResult.genJson(allocator);
+    }
+
+    // 3.1 生成除了familyName的其他信息（insideJson)
+    vector<string> infoKeyStr = {"userID", "userName", "phone", "buildingID", "familyID", "state"};
+    vector<vector<string>> infoValueStr = db.sqlResult;
+    vector<Value> infoValue(intPageTotal);
+    for (int i = 0; i < intPageTotal; ++i) {
+        jsonResult.genInsideJson(infoValue[i], infoKeyStr, infoValueStr[i], allocator);
+    }
+
+    // 3.2 生成familyName
+    for (int i = 0; i < intPageTotal; ++i) {
+        sql = "SELECT userName FROM User WHERE buildingID = " + infoValueStr[i][3] + " and familyID = " + infoValueStr[i][4] + " and userID != \"" + infoValueStr[i][0] + "\";";
+        if(!db.exeSQL(sql, RETRIEVE)) {
+            return CGenJson::genResultJson(MYSQL_ERR);
+        }
+        Value familyName(kArrayType);
+        int familyNameNum = mysql_num_rows(db.result);
+        if (familyNameNum) {
+            vector<string> familyNameStr;
+            for (int j = 0; j < familyNameNum; ++j) {
+                familyNameStr.push_back(db.sqlResult[j][0]);
+            }
+            jsonResult.genInsideArray1(familyName, familyNameStr, allocator);
+        }
+        infoValue[i].AddMember("familyName", familyName, allocator);
+        info.PushBack(infoValue[i], allocator);
+    }
+    jsonResult.jsonDoc.AddMember("info", info, allocator);
+    
+    return jsonResult.genJson(allocator);
+}

@@ -32,13 +32,22 @@ string newEquipment(string equipmentName, string storage) {
 string modifyEquipment(string equipmentID, string storageChange) {
     MyDB db;
 
-    // 先判断该ID是否已经注册过
-    string sql = "SELECT 1 FROM EquipmentStorage WHERE equipmentID = \"" + equipmentID + "\" LIMIT 1;";
+    // 先判断该ID是否已经注册过，顺便获取目标物资存量
+    string sql = "SELECT storage FROM EquipmentStorage WHERE equipmentID = \"" + equipmentID + "\" LIMIT 1;";
 	if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }    
     if (mysql_num_rows(db.result) == 0) { // 不存在该物资ID
         return CGenJson::genResultJson(HAVENT_REGISTER);
+    }
+
+    // 请求减少物资时需要判断物资是否够
+    if (storageChange[0] == '-') {
+        int storage = atoi(db.sqlResult[0][0].c_str());
+        int left = storage + atoi(storageChange.c_str());
+        if(left < 0) { // 物资不足
+            return CGenJson::genResultJson(NOT_ENOUGH);
+        }
     }
 
     sql = "UPDATE EquipmentStorage SET storage = storage" + storageChange + " WHERE equipmentID = " + equipmentID + ";";

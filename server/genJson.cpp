@@ -10,7 +10,7 @@ string CGenJson::genResultJson(int errCode) {
   Writer<StringBuffer> writer(s);
   writer.StartObject();
   writer.Key("result");
-  writer.Uint(errCode);
+  writer.String(to_string(errCode).c_str());
   writer.EndObject();
   string result = s.GetString();
   return result;
