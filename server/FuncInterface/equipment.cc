@@ -4,7 +4,10 @@
 #include "../genJson.h"
 #include<unordered_map>
 using namespace std;
-
+#define REFECT_APPLY "0"
+#define APPROVED_APPLY "1"
+#define UNPROCESSED_APPLY "2"
+#define ALL_APPLY "3"
 // 管理员新增一种物资
 string newEquipment(string equipmentName, string storage) {
     CGenJson jsonResult;
@@ -195,6 +198,69 @@ string getAllEquipment()
         jsonDoc.AddMember(Key,value,allocator); 
     }while(false);
     jsonDoc.Accept(Writer);
-    cout<<ResBuffer.GetString()<<endl;
+    return ResBuffer.GetString();
+}
+string getApplyEquipment(string userID,string type)
+{
+    MyDB db;
+    Document jsonDoc;
+    jsonDoc.SetObject();
+    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    StringBuffer ResBuffer;
+    Writer<StringBuffer> Writer(ResBuffer);
+    do{
+        vector<string> ValidType={REFECT_APPLY,APPROVED_APPLY,UNPROCESSED_APPLY,ALL_APPLY};
+        Value Key,value;
+        Key.SetString("result");
+        if(type.empty() || find(begin(ValidType),end(ValidType),type)==end(ValidType)){
+            value.SetInt(INVALID_REQ);
+            jsonDoc.AddMember(Key,value,allocator); 
+            break;
+        }
+        string sql="select * from User where userID=\""+userID+"\"";
+        if(!db.exeSQL(sql,RETRIEVE)){
+            value.SetInt(MYSQL_ERR);
+            jsonDoc.AddMember(Key,value,allocator); 
+            break;
+        }
+        if(db.sqlResult.empty()){
+            value.SetInt(HAVENT_REGISTER);
+            jsonDoc.AddMember(Key,value,allocator); 
+            break;
+        }
+        if(type==ALL_APPLY){
+            sql="select applyID,userID,equipmentName,amount,date,state from ApplyEquipment where userID=\""+userID+"\"";
+        }
+        else{
+            sql="select applyID,userID,equipmentName,amount,date,state from ApplyEquipment where userID=\""+userID+"\" and state="+type;
+        }
+        if(!db.exeSQL(sql,RETRIEVE)){
+            value.SetInt(MYSQL_ERR);
+            jsonDoc.AddMember(Key,value,allocator); 
+            break;
+        }
+        value.SetInt(SUCCESS);
+        jsonDoc.AddMember(Key,value,allocator); 
+        Key.SetString("pageTotal");
+        value.SetInt(db.sqlResult.size());
+        jsonDoc.AddMember(Key,value,allocator); 
+        if(db.sqlResult.empty()){
+            Key.SetString("applyInfo");
+            Value EmptyArray(kArrayType);
+            jsonDoc.AddMember(Key,EmptyArray,allocator); 
+            break;
+        }
+        else{
+            unordered_map<int,string> KeyNames;
+            KeyNames[0]="applyID";
+            KeyNames[1]="userID";
+            KeyNames[2]="equipmentName";
+            KeyNames[3]="amount";
+            KeyNames[4]="date";
+            KeyNames[5]="state";
+            GenJsonObjectArray("applyInfo",KeyNames,db.sqlResult,jsonDoc);
+        }
+    }while(false);
+    jsonDoc.Accept(Writer);
     return ResBuffer.GetString();
 }

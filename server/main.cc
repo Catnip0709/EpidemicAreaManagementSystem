@@ -238,5 +238,18 @@ int main(int argc,char **argv) {
     string result=getAllAnnouncement();
     res.set_content(result,"application/json");
   });
+  svr.Post("/getApplyStatus", [](const Request & req, Response &res) {
+    Document doc;
+    ParseResult pRes=doc.Parse(req.body.c_str());
+    if(pRes){
+      string result = getApplyEquipment(doc["userID"].GetString(), doc["type"].GetString());
+      res.set_content(result,"application/json");
+    }
+    else{
+      res.status=400;
+      res.set_content("ERROR JSON","text/plain");
+    }
+  });
+  
   svr.listen("0.0.0.0", port);
 }

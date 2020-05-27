@@ -45,7 +45,7 @@ string applyEquipment(string userID, string equipmentName, string amount, string
 string getApplyEquipment(string adminID);
 string getAllEquipment();
 string getAllAnnouncement();
-
+string getApplyEquipment(string userID,string type);
 string handleApplication(string applyID, string result, string adminID, string reply, string date);
 string GetQuarantineInfo(string type,string id);
 string SetQuarantineInfo(string userID,string adminID,string endDate);
