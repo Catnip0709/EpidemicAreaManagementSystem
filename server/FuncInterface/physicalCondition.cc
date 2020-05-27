@@ -146,9 +146,7 @@ string viewPhysicalCondition(string date) {
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }
-    if (!mysql_num_rows(db.result)) { // 无数据
-        return CGenJson::genResultJson(DATA_NULL);
-    }
+
     // 2、pageTotal
     int intPageTotal = db.sqlResult.size();
     string pageTotalValue = to_string(intPageTotal);
@@ -157,13 +155,17 @@ string viewPhysicalCondition(string date) {
     jsonResult.jsonDoc.AddMember("pageTotal", pageTotal, allocator);
 
     // 3、info数组
+    Value info(kArrayType);
+    if (!intPageTotal) {
+        jsonResult.jsonDoc.AddMember("info", kArrayType, allocator);
+        return jsonResult.genJson(allocator);
+    }
     vector<vector<string>> infoData = db.sqlResult;
     vector<string> infoKey = {"userID", "date", "todayTemperature", "HuBeiContact"};
     vector<Value> infoPart(intPageTotal);
     for (int i = 0; i < intPageTotal; ++i) {
         jsonResult.genInsideJson(infoPart[i], infoKey, infoData[i], allocator);
     }
-    Value info(kArrayType);
     for (int i = 0; i < intPageTotal; ++i) { // 每一组信息
         info.PushBack(infoPart[i], allocator);
     }

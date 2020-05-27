@@ -100,6 +100,18 @@ int main(int argc,char **argv) {
     res.set_content(result,"application/json");
   });
 
+  svr.Post("/viewUserInfo", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result;
+    if (CheckParameter(req.body)) {
+      result = viewUserInfo(doc["userName"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["phone"].GetString());
+    }
+    else {
+      result = "{\"result\":-2}";
+    }
+    res.set_content(result,"application/json");
+  });
+
   svr.Post("/physicalCondition", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
     string result;
