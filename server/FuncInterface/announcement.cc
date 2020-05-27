@@ -57,3 +57,48 @@ string deleteAnnouncement(string id) {
 
     return CGenJson::genResultJson(SUCCESS);
 }
+string getAllAnnouncement()
+{
+    MyDB db;
+    Document jsonDoc;
+    jsonDoc.SetObject();
+    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    StringBuffer ResBuffer;
+    Writer<StringBuffer> Writer(ResBuffer);
+    do{
+        Value Key,value;
+        Key.SetString("result");
+        string sql="select * from Announcement;";
+        if(!db.exeSQL(sql,RETRIEVE)) { 
+            value.SetInt(MYSQL_ERR);
+            jsonDoc.AddMember(Key,value,allocator); 
+            break;
+        }
+        if(db.sqlResult.empty()){
+            Value EmptyArray(kArrayType);
+            value.SetInt(SUCCESS);
+            jsonDoc.AddMember(Key,value,allocator);
+            Key.SetString("list");
+            jsonDoc.AddMember(Key,EmptyArray,allocator);
+            Key.SetString("pageTotal");
+            value.SetInt(0); 
+            jsonDoc.AddMember(Key,value,allocator);
+            break;
+        }
+        unordered_map<int,string> KeyNames;
+        KeyNames[0]="id";
+        KeyNames[1]="title";
+        KeyNames[2]="content";
+        KeyNames[3]="state";
+        KeyNames[4]="date";
+        GenJsonObjectArray("list",KeyNames,db.sqlResult,jsonDoc);
+        value.SetInt(SUCCESS);
+        jsonDoc.AddMember(Key,value,allocator); 
+        Key.SetString("pageTotal");
+        value.SetInt(db.sqlResult.size());
+        jsonDoc.AddMember(Key,value,allocator); 
+    }while(false);
+    jsonDoc.Accept(Writer);
+    cout<<ResBuffer.GetString()<<endl;
+    return ResBuffer.GetString();
+}
