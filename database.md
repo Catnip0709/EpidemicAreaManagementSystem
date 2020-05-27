@@ -176,7 +176,18 @@ INSERT INTO SpecialStateDailyRecord VALUES
 ("2020-05-25", 6,6,6,6,7,7,7,7),
 ("2020-05-26", 7,7,7,7,8,8,8,8); 
 ```
-
+## 在隔离态的用户的隔离时间表
++ 用户身份证（主键）
++ 开始日期 YYYY-MM-DD
++ 结束日期 YYYY-MM-DD
+```
+CREATE TABLE `Quarantine` (
+  `userID` char(18) NOT NULL, 
+  `beginDate` Date,
+  `endDate` Date,
+  PRIMARY KEY (`userID`) 
+) CHARSET=utf8;
+```
 
 # 三、公告栏
 ## 公告表 Announcement

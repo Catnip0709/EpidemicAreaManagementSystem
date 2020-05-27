@@ -207,8 +207,47 @@ int main(int argc,char **argv) {
     res.set_content(result,"application/json");
   });
   svr.Post("/QuarantineInformation", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
-    string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
+    Document doc;
+    ParseResult pRes=doc.Parse(req.body.c_str());
+    if(pRes){
+      string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
+      res.set_content(result,"application/json");
+    }
+    else{
+      res.status=400;
+      res.set_content("ERROR JSON","text/plain");
+    }
+  });
+  svr.Post("/QuarantineStatChange", [](const Request & req, Response &res) {
+    Document doc;
+    ParseResult pRes=doc.Parse(req.body.c_str());
+    if(pRes){
+      string result = SetQuarantineInfo(doc["userID"].GetString(), doc["adminID"].GetString(),doc["endDate"].GetString());
+      res.set_content(result,"application/json");
+    }
+    else{
+      res.status=400;
+      res.set_content("ERROR JSON","text/plain");
+    }
+  });
+  svr.Post("/HealthStateChange", [](const Request & req, Response &res) {
+    Document doc;
+    ParseResult pRes=doc.Parse(req.body.c_str());
+    if(pRes){
+      string result = SetUserHealthStat(doc["userID"].GetString(), doc["adminID"].GetString(),doc["state"].GetString());
+      res.set_content(result,"application/json");
+    }
+    else{
+      res.status=400;
+      res.set_content("ERROR JSON","text/plain");
+    }
+  });
+  svr.Get("/GetAllEquipment",[](const Request & req, Response &res){
+    string result=getAllEquipment();
+    res.set_content(result,"application/json");
+  });
+  svr.Get("/GetAllAnnouncement",[](const Request & req, Response &res){
+    string result=getAllAnnouncement();
     res.set_content(result,"application/json");
   });
   svr.listen("0.0.0.0", port);

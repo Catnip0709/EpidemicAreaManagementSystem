@@ -18,7 +18,10 @@ using namespace rapidjson;
 Document parseJson(const Request &req);
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
-vector<string> stringCut(string str, string cut);
+void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
+void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
+void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);
+vector<string> stringCut(string str,string cut);
 vector<string> get7date();
 
 // 业务接口，实现于FuncInterface文件夹下
@@ -41,10 +44,11 @@ string newEquipment(string equipmentName, string storage);
 string modifyEquipment(string equipmentID, string storageChange);
 string applyEquipment(string userID, string equipmentName, string amount, string date);
 string getApplyEquipment(string adminID);
+string getAllEquipment();
+string getAllAnnouncement();
+
 string handleApplication(string applyID, string result, string adminID, string reply, string date);
 string GetQuarantineInfo(string type,string id);
+string SetQuarantineInfo(string userID,string adminID,string endDate);
+string SetUserHealthStat(string userID,string adminID,string status);
 
-// 生成json接口
-void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
-void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
-void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);
