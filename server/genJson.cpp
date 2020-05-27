@@ -28,21 +28,16 @@ void CGenJson::genInsideJson(Value &objValue, vector<string> key, vector<string>
 }
 
 // 生成内部一维数组
-void CGenJson::genInsideArray1(Value &myArray, vector<string> key, vector<string> value, Document::AllocatorType& allocator) {
+void CGenJson::genInsideArray1(Value &myArray, vector<string> value, Document::AllocatorType& allocator) {
   for (int i = 0; i < value.size(); ++i) { // 每一组信息
-    Value objValue;
-    objValue.SetObject();
-    Value k, v;
-    k.SetString(key[i].c_str(), allocator);
+    Value v;
     v.SetString(value[i].c_str(), allocator);
-    objValue.AddMember(k, v, allocator);
-    myArray.PushBack(objValue, allocator);
+    myArray.PushBack(v, allocator);
   }
 }
 
 // 生成内部二维数组
 void CGenJson::genInsideArray2(Value &myArray, vector<string> key, vector<vector<string>> value, Document::AllocatorType& allocator) {
-  //unordered_map<string, vector<string>>::iterator;
   for (int i = 0; i < value.size(); ++i) { // 每一组信息
     Value objValue;
     objValue.SetObject();

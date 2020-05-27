@@ -31,12 +31,12 @@ bool CheckParameter(string param) {
     return true;
 }
 
-// string根据下划线切割
-vector<string> stringCut(string str) {
+// string根据cut符号切割
+vector<string> stringCut(string str, string cut) {
   vector<string> result;
 	int begin = 0;
 	while (1) {
-		int end = str.find("_", begin);
+		int end = str.find(cut, begin);
 		if (end == -1) {
 			end = str.size();
 		}
@@ -47,6 +47,22 @@ vector<string> stringCut(string str) {
 		}
 	}
 	return result;
+}
+
+vector<string> get7date() { // date为今天，获取今天及前6天的日期
+    vector<string> result;
+    time_t rawtime;
+    struct tm * timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    for (int i = 0; i < 7; i++) {
+        timeinfo->tm_hour -= 24;
+        mktime(timeinfo);
+        string month = timeinfo->tm_mon + 1 < 10 ? "0" + to_string(timeinfo->tm_mon + 1) : to_string(timeinfo->tm_mon + 1);
+        string tempDate = to_string(timeinfo->tm_year + 1900) + "-" + month + "-" + to_string(timeinfo->tm_mday);
+        result.push_back(tempDate);
+    }
+    return result;
 }
 
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc)

@@ -189,7 +189,7 @@ bool IsAdminOpValid(const string& userID,const string& adminId)
             break;
         }
         string AdminBuildings=db.sqlResult[0][0];
-        vector<string> EachBuilding=stringCut(AdminBuildings);
+        vector<string> EachBuilding=stringCut(AdminBuildings,"_");
         sql="select buildingID from User where userID=\""+userID+"\"";
         if(!db.exeSQL(sql, RETRIEVE)) { 
             break;

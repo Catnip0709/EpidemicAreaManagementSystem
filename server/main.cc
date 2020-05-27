@@ -47,7 +47,7 @@ int main(int argc,char **argv) {
       result = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
@@ -59,7 +59,7 @@ int main(int argc,char **argv) {
       result = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     }
     else {
-      result = "{\"result\":-2,\"id\":-1}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
@@ -109,6 +109,30 @@ int main(int argc,char **argv) {
     else {
       result = "{\"result\":-2}";
     }
+    res.set_content(result,"application/json");
+  });
+  
+  svr.Post("/epidemicSituation", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result;
+    if (CheckParameter(req.body)) {
+      result = epidemicSituation(doc["date"].GetString());
+    }
+    else {
+      result = "{\"result\":\"-2\"}";
+    }
+    res.set_content(result,"application/json");
+  });
+  svr.Post("/viewPhysicalCondition", [](const Request & req, Response &res) {
+    Document doc = parseJson(req);
+    string result;
+    if (CheckParameter(req.body)) {
+      result = viewPhysicalCondition(doc["date"].GetString());
+    }
+    else {
+      result = "{\"result\":\"-2\"}";
+    }
+    res.set_content(result,"application/json");
   });
 
   svr.Post("/newEquipment", [](const Request & req, Response &res) {
@@ -118,7 +142,7 @@ int main(int argc,char **argv) {
       result = newEquipment(doc["equipmentName"].GetString(), doc["storage"].GetString());
     }
     else {
-      result = "{\"result\":-2,\"equipmentID\":-1} ";
+      result = "{\"result\":\"-2\"} ";
     }
     res.set_content(result,"application/json");
   });
@@ -130,7 +154,7 @@ int main(int argc,char **argv) {
       result = modifyEquipment(doc["equipmentID"].GetString(), doc["storageChange"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
