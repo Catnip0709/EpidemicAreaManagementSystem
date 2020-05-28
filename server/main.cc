@@ -161,21 +161,11 @@ int main(int argc,char **argv) {
     }
   });
   
-  svr.Post("/epidemicSituation", [](const Request & req, Response &res) {
-    string result;
-    Document doc;
-    ParseResult pRes = doc.Parse(req.body.c_str());
-    vector<string> param = {"date"};
-    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
-      result = epidemicSituation(doc["date"].GetString());
-      cout << "epidemicSituation" << endl << result << endl << endl;
-      res.set_content(result,"application/json");
-    }
-    else {
-      res.status = 400;
-      res.set_content("ERROR JSON","text/plain");
-    }
+  svr.Get("/epidemicSituation",[](const Request & req, Response &res){
+    string result = epidemicSituation();
+    res.set_content(result,"application/json");
   });
+
   svr.Post("/viewPhysicalCondition", [](const Request & req, Response &res) {
     string result;
     Document doc;

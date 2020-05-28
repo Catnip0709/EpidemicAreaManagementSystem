@@ -40,17 +40,18 @@ vector<string> stringCut(string str, string cut) {
 	return result;
 }
 
-vector<string> get7date() { // date为今天，获取今天及前6天的日期
+vector<string> get7date() { // 获取今天及前6天的日期
     vector<string> result;
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
     timeinfo = localtime(&rawtime);
+    timeinfo->tm_hour += 24;
     for (int i = 0; i < 7; i++) {
         timeinfo->tm_hour -= 24;
         mktime(timeinfo);
-        string month = timeinfo->tm_mon + 1 < 10 ? "0" + to_string(timeinfo->tm_mon + 1) : to_string(timeinfo->tm_mon + 1);
-        string tempDate = to_string(timeinfo->tm_year + 1900) + "-" + month + "-" + to_string(timeinfo->tm_mday);
+        string tempDate = to_string(timeinfo->tm_year + 1900) + "-" + to_string(timeinfo->tm_mon + 1) + "-" + to_string(timeinfo->tm_mday);
+        cout<<tempDate<<endl;
         result.push_back(tempDate);
     }
     return result;

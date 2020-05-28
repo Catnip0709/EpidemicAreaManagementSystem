@@ -24,16 +24,17 @@ string physicalCondition(string userID, string date, string todayTemperature, st
     return CGenJson::genResultJson(SUCCESS);
 }
 
-string epidemicSituation(string date) {
+string epidemicSituation() {
     CGenJson jsonResult;
     Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
     MyDB db;
 
+    vector<string> date7 = get7date();
     // 0、添加result信息（如果出错会直接返回，故可直接添加成功信息）
     jsonResult.jsonDoc.AddMember("result", "0", allocator);
 
     // 1、获取当日填报了健康状况的人数和未填报的人数  todayList
-    string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = " + date + ";";
+    string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = \"" + date7[6] + "\";";
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }
@@ -66,7 +67,6 @@ string epidemicSituation(string date) {
 
     // 3、获取今日新增的（2=隔离、3=疑似、4=确诊、5=死亡）人数 = 今日当前-昨天总数  todayIncrease
     Value todayIncrease;
-    vector<string> date7 = get7date();
     sql = "SELECT segregation, suspected, diagnosis, die FROM SpecialStateDailyRecord WHERE date = \"" + date7[5] + "\";";
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
@@ -94,6 +94,7 @@ string epidemicSituation(string date) {
         vector<string> trendDataValuePart;
         for (int j = 0; j < 6; ++j) { // 前6天数据
             sql = "SELECT " + totalKey[i] + " FROM SpecialStateDailyRecord WHERE date = \"" + date7[j] + "\";";
+            cout<<sql<<endl;
             if(!db.exeSQL(sql, RETRIEVE)) {
                 return CGenJson::genResultJson(MYSQL_ERR);
             }
