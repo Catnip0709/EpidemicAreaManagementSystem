@@ -40,29 +40,49 @@ vector<string> stringCut(string str, string cut) {
 	return result;
 }
 
-vector<string> get7date() { // 获取今天及前6天的日期
+vector<string> get7date() { // 获取今天及前6天的日期，递增
     vector<string> result;
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    timeinfo->tm_hour += 24;
-    for (int i = 0; i < 7; i++) {
-        timeinfo->tm_hour -= 24;
+    timeinfo->tm_hour -= 24 * 8;
+    for (int i = 0; i < 8; i++) {
+        timeinfo->tm_hour += 24;
         mktime(timeinfo);
-        string tempDate = to_string(timeinfo->tm_year + 1900) + "-" + to_string(timeinfo->tm_mon + 1) + "-" + to_string(timeinfo->tm_mday);
-        cout<<tempDate<<endl;
+        string month = timeinfo->tm_mon + 1 < 10 ? "0" + to_string(timeinfo->tm_mon + 1) : to_string(timeinfo->tm_mon + 1);
+        string day = timeinfo->tm_mday < 10 ? "0" + to_string(timeinfo->tm_mday) : to_string(timeinfo->tm_mday);
+        string tempDate = to_string(timeinfo->tm_year + 1900) + "-" + month + "-" + day;
         result.push_back(tempDate);
     }
     return result;
 }
 
+// 判断日期是不是XXXX-YY-ZZ型，如果不是则补齐
+string dateVerification(string date) {
+    vector<string> cutDate = stringCut(date, "-");
+    if (cutDate[1].size() == 1) {
+        cutDate[1] = "0" + cutDate[1];
+    }
+    if (cutDate[2].size() == 1) {
+        cutDate[2] = "0" + cutDate[2];
+    }
+    return cutDate[0] + "-" + cutDate[1] + "-" + cutDate[2];
+}
+
 //传入的body中是否有该参数，防止服务器挂掉
-bool isParamValid(vector<string> param, Document *doc) {
+bool isParamValid(vector<string> &param, Document *doc) {
     for (int i = 0; i < param.size(); ++i) {
         if(!doc->HasMember(param[i].c_str())) {
             return false;
         }
+    }
+    if (doc->HasMember("date")) {
+        string date = dateVerification((*doc)["date"].GetString());
+        //Value s;
+        //s.SetString(date.c_str());
+        Document::AllocatorType& allocator = (*doc).GetAllocator();
+        (*doc)["date"].SetString(date.c_str(), allocator);
     }
     return true;
 }

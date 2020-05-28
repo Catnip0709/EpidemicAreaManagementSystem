@@ -155,7 +155,7 @@ CREATE TABLE `HandleApplication` (
 + 当日新增的死亡人数 die
 ```
 CREATE TABLE `SpecialStateDailyRecord` (
-  `date`              char(10)   NOT NULL, 
+  `date`              DATE       NOT NULL, 
   `segregation`       INT        NOT NULL,
   `suspected`         INT        NOT NULL,
   `diagnosis`         INT        NOT NULL,

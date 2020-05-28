@@ -94,7 +94,6 @@ string epidemicSituation() {
         vector<string> trendDataValuePart;
         for (int j = 0; j < 6; ++j) { // 前6天数据
             sql = "SELECT " + totalKey[i] + " FROM SpecialStateDailyRecord WHERE date = \"" + date7[j] + "\";";
-            cout<<sql<<endl;
             if(!db.exeSQL(sql, RETRIEVE)) {
                 return CGenJson::genResultJson(MYSQL_ERR);
             }
