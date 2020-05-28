@@ -18,34 +18,36 @@ int main(int argc,char **argv) {
     return -1;
   }
   svr.Post("/userRegister", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["familyID"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/adminRegister", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = adminRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/login", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
-    cout<<req.body<<endl;
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
     }
     else {
@@ -55,9 +57,10 @@ int main(int argc,char **argv) {
   });
 
   svr.Post("/newAnnouncement", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     }
     else {
@@ -67,69 +70,75 @@ int main(int argc,char **argv) {
   });
 
   svr.Post("/modifyAnnouncement", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = modifyAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/deleteAnnouncement", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = deleteAnnouncement(doc["id"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/modifyInchargeBuilding", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = modifyInchargeBuilding(doc["userID"].GetString(), doc["buildingID"].GetString(), doc["isAdd"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/viewUserInfo", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = viewUserInfo(doc["userName"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["phone"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/physicalCondition", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = physicalCondition(doc["userID"].GetString(), doc["date"].GetString(), doc["todayTemperature"].GetString(), doc["HuBeiContact"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
   
   svr.Post("/epidemicSituation", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = epidemicSituation(doc["date"].GetString());
     }
     else {
@@ -138,9 +147,10 @@ int main(int argc,char **argv) {
     res.set_content(result,"application/json");
   });
   svr.Post("/viewPhysicalCondition", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = viewPhysicalCondition(doc["date"].GetString());
     }
     else {
@@ -150,9 +160,10 @@ int main(int argc,char **argv) {
   });
 
   svr.Post("/newEquipment", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = newEquipment(doc["equipmentName"].GetString(), doc["storage"].GetString());
     }
     else {
@@ -162,9 +173,10 @@ int main(int argc,char **argv) {
   });
 
   svr.Post("/modifyEquipment", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = modifyEquipment(doc["equipmentID"].GetString(), doc["storageChange"].GetString());
     }
     else {
@@ -174,43 +186,46 @@ int main(int argc,char **argv) {
   });
 
   svr.Post("/applyEquipment", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = applyEquipment(doc["userID"].GetString(), doc["equipmentName"].GetString(), doc["amount"].GetString(), doc["date"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/getApplyEquipment", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = getApplyEquipment(doc["adminID"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
 
   svr.Post("/handleApplication", [](const Request & req, Response &res) {
-    Document doc = parseJson(req);
     string result;
-    if (CheckParameter(req.body)) {
+    Document doc;
+    ParseResult pRes = doc.Parse(req.body.c_str());
+    if (pRes && CheckParameter(req.body)) {
       result = handleApplication(doc["applyID"].GetString(), doc["result"].GetString(), doc["adminID"].GetString(), doc["reply"].GetString(), doc["date"].GetString());
     }
     else {
-      result = "{\"result\":-2}";
+      result = "{\"result\":\"-2\"}";
     }
     res.set_content(result,"application/json");
   });
   svr.Post("/QuarantineInformation", [](const Request & req, Response &res) {
     Document doc;
-    ParseResult pRes=doc.Parse(req.body.c_str());
+    ParseResult pRes = doc.Parse(req.body.c_str());
     if(pRes){
       string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
       res.set_content(result,"application/json");
@@ -240,12 +255,12 @@ int main(int argc,char **argv) {
       res.set_content(result,"application/json");
     }
     else{
-      res.status=400;
+      res.status = 400;
       res.set_content("ERROR JSON","text/plain");
     }
   });
   svr.Get("/GetAllEquipment",[](const Request & req, Response &res){
-    string result=getAllEquipment();
+    string result = getAllEquipment();
     res.set_content(result,"application/json");
   });
   svr.Get("/GetAllAnnouncement",[](const Request & req, Response &res){
@@ -254,7 +269,7 @@ int main(int argc,char **argv) {
   });
   svr.Post("/getApplyStatus", [](const Request & req, Response &res) {
     Document doc;
-    ParseResult pRes=doc.Parse(req.body.c_str());
+    ParseResult pRes = doc.Parse(req.body.c_str());
     if(pRes){
       string result = getApplyEquipment(doc["userID"].GetString(), doc["type"].GetString());
       res.set_content(result,"application/json");

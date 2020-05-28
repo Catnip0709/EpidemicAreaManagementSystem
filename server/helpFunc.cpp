@@ -1,14 +1,5 @@
 #include "interface.h"
 
-Document* parseJson(const Request &req) {
-  Document *doc=new Document();
-  ParseResult pRes=doc->Parse(req.body.c_str());
-  if(!pRes){
-      return NULL;
-  }
-  return doc;
-}
-
 // 检查SQL语句是否被注入
 bool CheckSQL(string sql) {
     string key[9] = { "%","/","union","|","&","^" ,"#","/*","*/"};

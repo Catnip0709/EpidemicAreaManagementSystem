@@ -13,7 +13,7 @@ string login(string userID, string password, string isAdmin) {
         table = "Admin";
     }
 
-    string sql = "SELECT password FROM " + table +" WHERE userID = \"" + userID + "\" LIMIT 1;";
+    string sql = "SELECT password FROM " + table + " WHERE userID = \"" + userID + "\" LIMIT 1;";
     if (!db.exeSQL(sql, RETRIEVE)) { // MYSQL执行失败
         return CGenJson::genResultJson(MYSQL_ERR);        
     }

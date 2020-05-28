@@ -15,13 +15,12 @@ using namespace httplib;
 using namespace rapidjson;
 
 // 辅助函数接口，实现于helpFunc.cpp
-Document* parseJson(const Request &req);
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
 void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
 void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);
-vector<string> stringCut(string str,string cut);
+vector<string> stringCut(string str, string cut);
 vector<string> get7date();
 
 // 业务接口，实现于FuncInterface文件夹下
