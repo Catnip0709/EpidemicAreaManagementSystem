@@ -15,7 +15,7 @@ using namespace httplib;
 using namespace rapidjson;
 
 // 辅助函数接口，实现于helpFunc.cpp
-Document parseJson(const Request &req);
+Document* parseJson(const Request &req);
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);

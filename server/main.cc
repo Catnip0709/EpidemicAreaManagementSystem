@@ -12,10 +12,11 @@ int main(int argc,char **argv) {
   uint16_t port = atoi(argv[1]);
   Server svr;
 
-  svr.Get("/hi", [](const Request & req, Response &res) {
-    res.set_content("Hello World!", "text/plain");
-  });
-
+  auto ret = svr.set_mount_point("/", "./html");
+  if (!ret) {
+    cerr<<"server mount error"<<endl;
+    return -1;
+  }
   svr.Post("/userRegister", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
     string result;
@@ -42,6 +43,7 @@ int main(int argc,char **argv) {
 
   svr.Post("/login", [](const Request & req, Response &res) {
     Document doc = parseJson(req);
+    cout<<req.body<<endl;
     string result;
     if (CheckParameter(req.body)) {
       result = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
