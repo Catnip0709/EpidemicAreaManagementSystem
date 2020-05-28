@@ -56,6 +56,16 @@ vector<string> get7date() { // date为今天，获取今天及前6天的日期
     return result;
 }
 
+//传入的body中是否有该参数，防止服务器挂掉
+bool isParamValid(vector<string> param, Document *doc) {
+    for (int i = 0; i < param.size(); ++i) {
+        if(!doc->HasMember(param[i].c_str())) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc)
 {
     if(queryResult.empty() || ArrayName.empty()){

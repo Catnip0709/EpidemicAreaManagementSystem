@@ -17,6 +17,7 @@ using namespace rapidjson;
 // 辅助函数接口，实现于helpFunc.cpp
 bool CheckSQL(string sql);
 bool CheckParameter(string param);
+bool isParamValid(vector<string> param, Document *doc);
 void GenJsonObjectArray(const string& ArrayName,const unordered_map<int,string>& keyNames,const vector<vector<string>>& queryResult,Document& jsonDoc);
 void GenJsonLinearArray(const string& ArrayName,const vector<string>& LinearArray,Document& jsonDoc);
 void GenJsonObjectWithObjectValue(const string& ArrayName,const unordered_map<string,string>& keyValues,Document& jsonDoc);

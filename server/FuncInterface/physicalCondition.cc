@@ -85,6 +85,7 @@ string epidemicSituation(string date) {
     // 4、日期数组
     Value KEYdate(kArrayType);
     jsonResult.genInsideArray1(KEYdate, date7, allocator);
+    jsonResult.jsonDoc.AddMember("date", KEYdate, allocator);
 
     // 5、趋势变化
     // 5.1 获取数据（4个数组）

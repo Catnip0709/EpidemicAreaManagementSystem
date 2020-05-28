@@ -35,18 +35,18 @@ bool MyDB::exeSQL(string sql, int op) {
 	}
 	else {
 		if (op == RETRIEVE) {
-			cout << "——————MYSQL结果——————" << endl;
+			//cout << "——————MYSQL结果——————" << endl;
 			result = mysql_use_result(connection); // 获取结果集
 			while(row = mysql_fetch_row(result)) { // 不断获取下一行
 				vector<string> rowResult;
 				for(int j = 0; j < mysql_num_fields(result); ++j) { // mysql_num_fields()返回列数
 					rowResult.push_back(row[j]);
-					cout << row[j] << " ";
+					//cout << row[j] << " ";
 				}
 				sqlResult.push_back(rowResult);
-				cout << endl;
+				//cout << endl;
 			}
-			cout << "——————————————————" << endl;
+			//cout << "——————————————————" << endl;
 		}
 	}
 	return true;

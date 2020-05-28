@@ -21,224 +21,273 @@ int main(int argc,char **argv) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
-      result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["familyID"].GetString());
+    vector<string> param = {"userID", "userName", "password", "phone", "buildingID", "familyID", "state"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
+      result = userRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["state"].GetString());
+      cout << "userRegister" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/adminRegister", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userID", "userName", "password", "phone", "buildingID"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = adminRegister(doc["userID"].GetString(), doc["userName"].GetString(), doc["password"].GetString(), doc["phone"].GetString(), doc["buildingID"].GetString());
+      cout << "adminRegister" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/login", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userID", "password", "isAdmin"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = login(doc["userID"].GetString(), doc["password"].GetString(), doc["isAdmin"].GetString());
+      cout << "login" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/newAnnouncement", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"title", "content", "state", "date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = newAnnouncement(doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+      cout << "newAnnouncement" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/modifyAnnouncement", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"id", "title", "content", "state", "date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = modifyAnnouncement(doc["id"].GetString(), doc["title"].GetString(), doc["content"].GetString(), doc["state"].GetString(), doc["date"].GetString());
+      cout << "modifyAnnouncement" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/deleteAnnouncement", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"id"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = deleteAnnouncement(doc["id"].GetString());
+      cout << "deleteAnnouncement" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/modifyInchargeBuilding", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userID", "buildingID", "isAdd"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = modifyInchargeBuilding(doc["userID"].GetString(), doc["buildingID"].GetString(), doc["isAdd"].GetString());
+      cout << "modifyInchargeBuilding" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/viewUserInfo", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userName", "buildingID", "familyID", "phone"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = viewUserInfo(doc["userName"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["phone"].GetString());
+      cout << "viewUserInfo" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/physicalCondition", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userID", "date", "todayTemperature", "HuBeiContact"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = physicalCondition(doc["userID"].GetString(), doc["date"].GetString(), doc["todayTemperature"].GetString(), doc["HuBeiContact"].GetString());
+      cout << "physicalCondition" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
   
   svr.Post("/epidemicSituation", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = epidemicSituation(doc["date"].GetString());
+      cout << "epidemicSituation" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
   svr.Post("/viewPhysicalCondition", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = viewPhysicalCondition(doc["date"].GetString());
+      cout << "viewPhysicalCondition" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/newEquipment", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"equipmentName", "storage"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = newEquipment(doc["equipmentName"].GetString(), doc["storage"].GetString());
+      cout << "newEquipment" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
       result = "{\"result\":\"-2\"} ";
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/modifyEquipment", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"equipmentID", "storageChange"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = modifyEquipment(doc["equipmentID"].GetString(), doc["storageChange"].GetString());
+      cout << "modifyEquipment" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/applyEquipment", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"userID", "equipmentName", "amount", "date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = applyEquipment(doc["userID"].GetString(), doc["equipmentName"].GetString(), doc["amount"].GetString(), doc["date"].GetString());
+      cout << "applyEquipment" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/getApplyEquipment", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"adminID"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = getApplyEquipment(doc["adminID"].GetString());
+      cout << "getApplyEquipment" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
 
   svr.Post("/handleApplication", [](const Request & req, Response &res) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if (pRes && CheckParameter(req.body)) {
+    vector<string> param = {"applyID", "result", "adminID", "reply", "date"};
+    if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
       result = handleApplication(doc["applyID"].GetString(), doc["result"].GetString(), doc["adminID"].GetString(), doc["reply"].GetString(), doc["date"].GetString());
+      cout << "handleApplication" << endl << result << endl << endl;
+      res.set_content(result,"application/json");
     }
     else {
-      result = "{\"result\":\"-2\"}";
+      res.status = 400;
+      res.set_content("ERROR JSON","text/plain");
     }
-    res.set_content(result,"application/json");
   });
   svr.Post("/QuarantineInformation", [](const Request & req, Response &res) {
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if(pRes){
+    vector<string> param = {"type", "userID"};
+    if(pRes && isParamValid(param, &doc)){
       string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
       res.set_content(result,"application/json");
     }
     else{
-      res.status=400;
+      res.status = 400;
       res.set_content("ERROR JSON","text/plain");
     }
   });
   svr.Post("/QuarantineStatChange", [](const Request & req, Response &res) {
     Document doc;
     ParseResult pRes=doc.Parse(req.body.c_str());
-    if(pRes){
+    vector<string> param = {"userID", "adminID", "endDate"};
+    if(pRes && isParamValid(param, &doc)){
       string result = SetQuarantineInfo(doc["userID"].GetString(), doc["adminID"].GetString(),doc["endDate"].GetString());
       res.set_content(result,"application/json");
     }
@@ -250,7 +299,8 @@ int main(int argc,char **argv) {
   svr.Post("/HealthStateChange", [](const Request & req, Response &res) {
     Document doc;
     ParseResult pRes=doc.Parse(req.body.c_str());
-    if(pRes){
+    vector<string> param = {"userID", "adminID", "state"};
+    if(pRes && isParamValid(param, &doc)){
       string result = SetUserHealthStat(doc["userID"].GetString(), doc["adminID"].GetString(),doc["state"].GetString());
       res.set_content(result,"application/json");
     }
@@ -270,12 +320,13 @@ int main(int argc,char **argv) {
   svr.Post("/getApplyStatus", [](const Request & req, Response &res) {
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    if(pRes){
+    vector<string> param = {"userID", "type"};
+    if(pRes && isParamValid(param, &doc)){
       string result = getApplyEquipment(doc["userID"].GetString(), doc["type"].GetString());
       res.set_content(result,"application/json");
     }
     else{
-      res.status=400;
+      res.status = 400;
       res.set_content("ERROR JSON","text/plain");
     }
   });
