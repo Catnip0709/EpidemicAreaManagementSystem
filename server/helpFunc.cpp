@@ -79,8 +79,6 @@ bool isParamValid(vector<string> &param, Document *doc) {
     }
     if (doc->HasMember("date")) {
         string date = dateVerification((*doc)["date"].GetString());
-        //Value s;
-        //s.SetString(date.c_str());
         Document::AllocatorType& allocator = (*doc).GetAllocator();
         (*doc)["date"].SetString(date.c_str(), allocator);
     }
