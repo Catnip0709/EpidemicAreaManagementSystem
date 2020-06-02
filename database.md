@@ -79,13 +79,13 @@ CREATE TABLE `Family` (
 + 当日是否与湖北籍人员接触 HuBeiContact  无接触=0，有接触=1  
 ```
 CREATE TABLE `PhysicalCondition` (
-  `userID` char(18) NOT NULL,
-  `date` char(10) NOT NULL, 
-  `todayTemperature` double NOT NULL,
-  `HuBeiContact` char(10) NOT NULL,
+  `userID`            char(18)  NOT NULL,
+  `date`              DATE      NOT NULL, 
+  `todayTemperature`  double    NOT NULL,
+  `HuBeiContact`      char(10)  NOT NULL,
   PRIMARY KEY (`userID`, `date`) 
 );
-INSERT INTO `PhysicalCondition` VALUE ("452223199707090000", "2020-03-23", "36.5", "0");
+INSERT INTO `PhysicalCondition` VALUE ("452223199707090000", "2020-05-29", "36.5", "0");
 ```
 
 ## 2、EquipmentStorage 防疫物资存量表

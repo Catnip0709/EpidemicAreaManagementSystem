@@ -61,7 +61,7 @@ string modifyInchargeBuilding(string userID, string buildingID, string isAdd) {
 }
 
 // 管理员查看所有用户信息
-string viewUserInfo(string userName, string buildingID, string familyID, string phone) {
+string viewUserInfo(string userID, string userName, string buildingID, string familyID, string phone) {
     CGenJson jsonResult;
     Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
     MyDB db;
@@ -70,12 +70,21 @@ string viewUserInfo(string userName, string buildingID, string familyID, string 
     
     string sql = "SELECT userID, userName, phone, buildingID, familyID, state FROM User";
     
-    if (!(userName.empty() && buildingID.empty() && familyID.empty() && phone.empty())) {// 至少一项不为空        
+    if (!(userID.empty() && userName.empty() && buildingID.empty() && familyID.empty() && phone.empty())) {// 至少一项不为空        
         bool count = false; // 当前变量之前的变量是否有值（为了拼接sql）
         sql += " WHERE ";
-        if (!userName.empty()) {
+        if (!userID.empty()) {
             count = true;
-            sql = sql + "userName = \"" + userName + "\"";
+            sql = sql + "userID = \"" + userID + "\"";
+        }
+        if (!userName.empty()) {
+            if(count) {
+                sql = sql + " and userName = " + userName;
+            }
+            else {
+                sql = sql + "userName = " + userName;
+            }
+            count = true;
         }
         if (!buildingID.empty()){
             if(count) {
@@ -106,7 +115,6 @@ string viewUserInfo(string userName, string buildingID, string familyID, string 
         }
     }
     sql += ";";
-    cout<<sql<<endl;
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }

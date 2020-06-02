@@ -133,9 +133,9 @@ int main(int argc,char **argv) {
     string result;
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
-    vector<string> param = {"userName", "buildingID", "familyID", "phone"};
+    vector<string> param = {"userID", "userName", "buildingID", "familyID", "phone"};
     if (pRes && CheckParameter(req.body) && isParamValid(param, &doc)) {
-      result = viewUserInfo(doc["userName"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["phone"].GetString());
+      result = viewUserInfo(doc["userID"].GetString(), doc["userName"].GetString(), doc["buildingID"].GetString(), doc["familyID"].GetString(), doc["phone"].GetString());
       cout << "viewUserInfo" << endl << result << endl << endl;
       res.set_content(result,"application/json");
     }
