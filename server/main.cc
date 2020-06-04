@@ -11,13 +11,17 @@ int main(int argc,char **argv) {
 
   uint16_t port = atoi(argv[1]);
   Server svr;
-
-  auto ret = svr.set_mount_point("/admin", "./admin");
+  auto ret=svr.set_mount_point("/","./html");
   if (!ret) {
     cerr<<"server mount error"<<endl;
     return -1;
   }
-  ret=svr.set_mount_point("/","./user");
+  ret = svr.set_mount_point("/admin", "./admin");
+  if (!ret) {
+    cerr<<"server mount error"<<endl;
+    return -1;
+  }
+  ret = svr.set_mount_point("/user", "./user");
   if (!ret) {
     cerr<<"server mount error"<<endl;
     return -1;
