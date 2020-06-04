@@ -76,6 +76,9 @@ bool isParamValid(vector<string> &param, Document *doc) {
         if(!doc->HasMember(param[i].c_str())) {
             return false;
         }
+        if(!(*doc)[param[i].c_str()].IsString()){
+            return false;
+        }
     }
     if (doc->HasMember("date")) {
         string date = dateVerification((*doc)["date"].GetString());

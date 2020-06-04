@@ -77,7 +77,6 @@ string GetQuarantineInfo(string type,string id)
             jsonDoc.AddMember(Key,value,allocator);
             if(FinalResult.empty()){
                 Value EmptyArray(kArrayType);
-                jsonDoc.AddMember(Key,value,allocator);
                 Key.SetString("information");
                 jsonDoc.AddMember(Key,EmptyArray,allocator);
             }
