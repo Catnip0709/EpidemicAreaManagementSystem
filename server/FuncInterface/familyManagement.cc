@@ -79,10 +79,10 @@ string viewUserInfo(string userID, string userName, string buildingID, string fa
         }
         if (!userName.empty()) {
             if(count) {
-                sql = sql + " and userName = " + userName;
+                sql = sql + " and userName = \"" + userName + "\"";
             }
             else {
-                sql = sql + "userName = " + userName;
+                sql = sql + "userName = \"" + userName + "\"";
             }
             count = true;
         }
@@ -95,7 +95,7 @@ string viewUserInfo(string userID, string userName, string buildingID, string fa
             }
             count = true;
         }
-        if (!familyID.empty()){
+        if (!familyID.empty()) {
             if(count) {
                 sql = sql + " and familyID = " + familyID;
             }
@@ -121,9 +121,10 @@ string viewUserInfo(string userID, string userName, string buildingID, string fa
 
     // 2、添加pageTotal信息
     int intPageTotal = db.sqlResult.size();
-    string pageTotalValue = to_string(intPageTotal);
+    //string pageTotalValue = to_string(intPageTotal);
     Value pageTotal;
-    pageTotal.SetString(pageTotalValue.c_str(), allocator);
+    pageTotal.SetInt(intPageTotal);
+    //pageTotal.SetString(pageTotalValue.c_str(), allocator);
     jsonResult.jsonDoc.AddMember("pageTotal", pageTotal, allocator);
 
     // 3、添加info信息    

@@ -150,9 +150,10 @@ string viewPhysicalCondition(string date) {
 
     // 2、pageTotal
     int intPageTotal = db.sqlResult.size();
-    string pageTotalValue = to_string(intPageTotal);
+    //string pageTotalValue = to_string(intPageTotal);
     Value pageTotal;
-    pageTotal.SetString(pageTotalValue.c_str(), allocator);
+    pageTotal.SetInt(intPageTotal);
+    //pageTotal.SetString(pageTotalValue.c_str(), allocator);
     jsonResult.jsonDoc.AddMember("pageTotal", pageTotal, allocator);
 
     // 3、info数组

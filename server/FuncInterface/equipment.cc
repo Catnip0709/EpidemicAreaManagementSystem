@@ -76,6 +76,7 @@ string applyEquipment(string userID, string equipmentName, string amount, string
 
     // 提交申请
     sql = "INSERT INTO ApplyEquipment (userID,buildingID,equipmentName,amount,date,state) VALUES (\"" + userID + "\"," + buildingID + ",\"" + equipmentName + "\"," + amount + ",\"" + date + "\",2);";
+    cout<<sql<<endl;
     if (!db.exeSQL(sql, CREATE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }

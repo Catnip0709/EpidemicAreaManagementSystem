@@ -6,6 +6,8 @@ using namespace std;
 
 // 登录
 string login(string userID, string password, string isAdmin) {
+    CGenJson jsonResult;
+    Document::AllocatorType& allocator = jsonResult.jsonDoc.GetAllocator();
     MyDB db;
 
     string table = "User";
@@ -13,7 +15,7 @@ string login(string userID, string password, string isAdmin) {
         table = "Admin";
     }
 
-    string sql = "SELECT password FROM " + table + " WHERE userID = \"" + userID + "\" LIMIT 1;";
+    string sql = "SELECT password, userName FROM " + table + " WHERE userID = \"" + userID + "\" LIMIT 1;";
     if (!db.exeSQL(sql, RETRIEVE)) { // MYSQL执行失败
         return CGenJson::genResultJson(MYSQL_ERR);        
     }
@@ -22,7 +24,7 @@ string login(string userID, string password, string isAdmin) {
         return CGenJson::genResultJson(HAVENT_REGISTER);
     }
     
-    if (!(db.sqlResult.size() == 1 && db.sqlResult[0].size() == 1)) { // 数据出错，应该只得到一个结果
+    if (!(db.sqlResult.size() == 1)) { // 数据出错，应该只得到一个结果
         return CGenJson::genResultJson(DATA_ERR);
     } 
     
@@ -30,7 +32,13 @@ string login(string userID, string password, string isAdmin) {
         return CGenJson::genResultJson(PWD_ERR);
     }
     
-    return CGenJson::genResultJson(SUCCESS);
+    jsonResult.jsonDoc.AddMember("result", "0", allocator);
+
+    string strUserName = db.sqlResult[0][1];
+    Value userName;
+    userName.SetString(strUserName.c_str(), allocator);
+    jsonResult.jsonDoc.AddMember("userName", userName, allocator);
+    return jsonResult.genJson(allocator);
 }
 
 // 普通用户注册

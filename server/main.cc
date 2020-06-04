@@ -11,13 +11,12 @@ int main(int argc,char **argv) {
 
   uint16_t port = atoi(argv[1]);
   Server svr;
-
-  auto ret = svr.set_mount_point("/admin", "./admin");
+  auto ret = svr.set_mount_point("/","./admin");
   if (!ret) {
     cerr << "server mount error" << endl;
     return -1;
   }
-  ret = svr.set_mount_point("/","./user");
+  ret = svr.set_mount_point("/user", "./user");
   if (!ret) {
     cerr << "server mount error" << endl;
     return -1;
@@ -269,7 +268,7 @@ int main(int argc,char **argv) {
     Document doc;
     ParseResult pRes = doc.Parse(req.body.c_str());
     vector<string> param = {"type", "userID"};
-    if(pRes && isParamValid(param, &doc)){
+    if(pRes && isParamValid(param, &doc)) {
       string result = GetQuarantineInfo(doc["type"].GetString(), doc["userID"].GetString());
       res.set_content(result,"application/json");
     }
@@ -282,7 +281,7 @@ int main(int argc,char **argv) {
     Document doc;
     ParseResult pRes=doc.Parse(req.body.c_str());
     vector<string> param = {"userID", "adminID", "endDate"};
-    if(pRes && isParamValid(param, &doc)){
+    if(pRes && isParamValid(param, &doc)) {
       string result = SetQuarantineInfo(doc["userID"].GetString(), doc["adminID"].GetString(),doc["endDate"].GetString());
       res.set_content(result,"application/json");
     }
