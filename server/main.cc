@@ -14,12 +14,12 @@ int main(int argc,char **argv) {
 
   auto ret = svr.set_mount_point("/admin", "./admin");
   if (!ret) {
-    cerr<<"server mount error"<<endl;
+    cerr << "server mount error" << endl;
     return -1;
   }
-  ret=svr.set_mount_point("/","./user");
+  ret = svr.set_mount_point("/","./user");
   if (!ret) {
-    cerr<<"server mount error"<<endl;
+    cerr << "server mount error" << endl;
     return -1;
   }
   svr.Post("/userRegister", [](const Request & req, Response &res) {
