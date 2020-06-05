@@ -34,7 +34,7 @@ string epidemicSituation() {
     jsonResult.jsonDoc.AddMember("result", "0", allocator);
 
     // 1、获取当日填报了健康状况的人数和未填报的人数  todayList
-    string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = \"" + date7[6] + "\";";
+    string sql = "SELECT COUNT(*) FROM PhysicalCondition WHERE date = \"" + date7[7] + "\";";
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }
