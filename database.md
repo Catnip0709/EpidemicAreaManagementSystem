@@ -148,11 +148,15 @@ CREATE TABLE `HandleApplication` (
 
 ## 6、IsolationManagement  隔离管理
 ## 每日特殊情况用户记录  SpecialStateDailyRecord
-+ 日期 date （主键）
-+ 当日新增的隔离人数 segregation
-+ 当日新增的疑似人数 suspected
-+ 当日新增的确诊人数 diagnosis
-+ 当日新增的死亡人数 die
++ 日期               date （主键）
++ 当前总隔离人数      segregation
++ 当前总疑似人数      suspected
++ 当前总确诊人数      diagnosis
++ 当前总死亡人数      die
++ 当日新增的隔离人数  increSegregation
++ 当日新增的疑似人数  increSpected
++ 当日新增的确诊人数  increSuspected
++ 当日新增的死亡人数  increDie
 ```
 CREATE TABLE `SpecialStateDailyRecord` (
   `date`              DATE       NOT NULL, 
@@ -168,14 +172,14 @@ CREATE TABLE `SpecialStateDailyRecord` (
 )CHARSET=utf8;
 
 INSERT INTO SpecialStateDailyRecord VALUES 
-("2020-5-20", 1,1,1,1,0,0,0,0),
-("2020-5-21", 2,2,2,2,1,1,1,1),
-("2020-5-22", 3,3,3,3,2,2,2,2),
-("2020-5-23", 4,4,4,4,5,5,5,5),
-("2020-5-24", 5,5,5,5,6,6,6,6),
-("2020-5-25", 6,6,6,6,7,7,7,7),
-("2020-5-26", 7,7,7,7,8,8,8,8),
-("2020-5-27", 8,8,8,8,9,9,9,9); 
+("2020-5-29", 0,0,0,0,  0,0,0,0),
+("2020-5-30", 0,1,0,0,  0,1,0,0),
+("2020-5-31", 1,2,0,0,  1,1,0,0),
+("2020-6-1",  3,4,0,0,  2,2,0,0),
+("2020-6-2",  3,2,1,0,  0,-2,1,0),
+("2020-6-3",  4,0,2,0,  1,-2,1,0),
+("2020-6-4",  3,0,1,1,  -1,0,0,1),
+("2020-6-5",  2,1,3,1,  -1,1,2,0); 
 ```
 ## 在隔离态的用户的隔离时间表
 + 用户身份证（主键）

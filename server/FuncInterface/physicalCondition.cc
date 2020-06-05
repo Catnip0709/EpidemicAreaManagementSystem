@@ -84,6 +84,7 @@ string epidemicSituation() {
 
     // 4、日期数组
     Value KEYdate(kArrayType);
+    date7.pop_back();
     jsonResult.genInsideArray1(KEYdate, date7, allocator);
     jsonResult.jsonDoc.AddMember("date", KEYdate, allocator);
 
