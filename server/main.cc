@@ -167,6 +167,7 @@ int main(int argc,char **argv) {
   
   svr.Get("/epidemicSituation",[](const Request & req, Response &res){
     string result = epidemicSituation();
+    cout << "epidemicSituation" << endl << result << endl << endl;
     res.set_content(result,"application/json");
   });
 
@@ -305,10 +306,12 @@ int main(int argc,char **argv) {
   });
   svr.Get("/GetAllEquipment",[](const Request & req, Response &res){
     string result = getAllEquipment();
+    cout << "getAllEquipment" << endl << result << endl << endl;
     res.set_content(result,"application/json");
   });
   svr.Get("/GetAllAnnouncement",[](const Request & req, Response &res){
     string result=getAllAnnouncement();
+    cout << "getAllAnnouncement" << endl << result << endl << endl;
     res.set_content(result,"application/json");
   });
   svr.Post("/getApplyStatus", [](const Request & req, Response &res) {
