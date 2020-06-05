@@ -68,7 +68,7 @@ string getAllAnnouncement()
     do{
         Value Key,value;
         Key.SetString("result");
-        string sql="select * from Announcement;";
+        string sql="select * from Announcement order by date desc;";
         if(!db.exeSQL(sql,RETRIEVE)) { 
             value.SetInt(MYSQL_ERR);
             jsonDoc.AddMember(Key,value,allocator); 

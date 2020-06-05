@@ -118,7 +118,7 @@ string getApplyEquipment(string adminID) {
             sql += " OR buildingID = ";
         }
     }
-    sql += ";";
+    sql += " order by date desc;";
     if(!db.exeSQL(sql, RETRIEVE)) {
         return CGenJson::genResultJson(MYSQL_ERR);
     }  
@@ -130,7 +130,7 @@ string getApplyEquipment(string adminID) {
     Value v1, v2, v3(kArrayType);
     v1.SetString(to_string(SUCCESS).c_str(), allocator);
     jsonResult.jsonDoc.AddMember("result", v1, allocator);
-    v2.SetString(to_string(db.sqlResult.size()).c_str(), allocator);
+    v2.SetInt(db.sqlResult.size());
     jsonResult.jsonDoc.AddMember("applyNum", v2, allocator);
 
     vector<string> applyInfoKey = {"applyID", "userID", "equipmentName", "amount", "date", "state"};
